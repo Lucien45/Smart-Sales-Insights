@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
+<<<<<<< HEAD
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
@@ -21,16 +22,24 @@
     "react-router-dom": "^7.0.1",
     "react-toastify": "^10.0.6",
     "sweetalert2": "^11.14.5"
+=======
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2"
+>>>>>>> b524c8bf9b59d73a934590e3c838332ad198bac6
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9.13.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
     "vite": "^5.4.10"
