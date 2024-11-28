@@ -1,10 +1,10 @@
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 // Utilitaire pour afficher un message d'erreur
-const errorPage = (textError: string): void => {
+const errorPage = (textError: string, titleError: string): void => {
   Swal.fire({
     icon: 'error',
-    title: 'Erreur',
+    title: titleError,
     text: textError,
     timer: 3000,
     showConfirmButton: false,
@@ -12,10 +12,10 @@ const errorPage = (textError: string): void => {
 };
 
 // Utilitaire pour afficher un message de succès
-const success = (textSuccess: string): void => {
+const success = (textSuccess: string, titleSuccess: string): void => {
   Swal.fire({
     icon: 'success',
-    title: 'Succès',
+    title: titleSuccess,
     text: textSuccess,
     timer: 3000,
     showConfirmButton: false,
