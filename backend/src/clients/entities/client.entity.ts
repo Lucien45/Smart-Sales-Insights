@@ -12,6 +12,8 @@ export class Client {
   @Column()
   prenom: string;
 
-  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, { nullable: false })
+  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, {
+    nullable: false,
+  })
   idUtilisateur: Utilisateur;
 }

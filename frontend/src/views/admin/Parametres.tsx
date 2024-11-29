@@ -4,6 +4,7 @@ import { User, Users, PlusCircle } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { clearError, getProfileUser } from '../../redux/authSlice';
+
 const Parametres: React.FC = () => {
     const dispatch = useDispatch();
     const { user, isLoading, error } = useSelector((state: RootState) => state.auth);
