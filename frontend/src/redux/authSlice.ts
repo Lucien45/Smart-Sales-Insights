@@ -76,7 +76,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Utils.success('You have successfully logged in.', 'Welcome back!');
+        Utils.success('Vous êtes connecté avec succès.', 'Welcome back!');
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -89,7 +89,7 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
-        Utils.success('Please login with your new account.', 'Registration Successful');
+        Utils.success('Veuillez vous connecter avec votre nouveau compte.', 'Registration Successful');
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -99,7 +99,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
-        Utils.success('You have been successfully logged out.','Logged Out')
+        Utils.success('Vous avez été déconnecté avec succès.','Logged Out')
       })
       .addCase(getProfileUser.pending, (state) => {
         state.isLoading = true;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import '../../assets/css/layout.css';
-import NavBar from './Navbar';
 import Sidebar from './Sidebar';
+import NavBar from './NavBar';
 
 export const Layout: React.FC = () => {
 
