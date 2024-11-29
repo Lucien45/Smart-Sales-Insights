@@ -18,7 +18,7 @@ export class ProduitsService {
     return this.clientsRepository.save(produit);
   }
 
-  async update(id: number, produit: Partial<Produit>): Promise<Todo[]> {
+  async update(id: number, produit: Partial<Produit>): Promise<Produit[]> {
     await this.clientsRepository.update(id, produit);
     return this.clientsRepository.find();
   }
