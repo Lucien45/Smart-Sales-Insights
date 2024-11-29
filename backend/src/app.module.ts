@@ -20,7 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'root',
+      password: 'azerty',
       database: 'smart_sales',
       entities: ['dist/**/*.entity{.js,.ts}'],
       synchronize: true,
