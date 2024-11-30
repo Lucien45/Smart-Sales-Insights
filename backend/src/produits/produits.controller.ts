@@ -13,6 +13,10 @@ import { Produit } from './entities/produit.entity';
 @Controller('produits')
 export class ProduitsController {
   constructor(private readonly produitsService: ProduitsService) {}
+  @Get('stats')
+  getProduitsAchetesParCategorie() {
+    return this.produitsService.getProduitsAchetesParCategorie();
+  }
 
   @Get(':id')
   findOneById(@Param('id') id: string): Promise<Produit> {

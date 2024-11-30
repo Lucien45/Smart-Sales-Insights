@@ -3,20 +3,16 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
+  BarElement
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { Card } from 'react-bootstrap';
 
 // Enregistrer les composants ChartJS nécessaires
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
-  Title,
-  Tooltip
+  BarElement
 );
 
 interface VenteParClient {
@@ -24,7 +20,7 @@ interface VenteParClient {
   ventes: number;
 }
 
-const VentesParClientChart = () => {
+const AchatsParClientChart = () => {
   const [data, setData] = useState<VenteParClient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,7 +52,7 @@ const VentesParClientChart = () => {
       },
       title: {
         display: true,
-        text: 'Nombre de ventes par client',
+        text: "Nombre d'achats par client",
         font: {
           size: 16,
         },
@@ -90,21 +86,21 @@ const VentesParClientChart = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-96 border rounded-lg shadow-lg">
+      <Card className="w-full h-96 border rounded-lg shadow-lg">
         <div className="flex items-center justify-center h-full">
           <p>Chargement des données...</p>
         </div>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <div className="w-full p-4 border rounded-lg shadow-lg">
+    <Card className="w-full p-4 border rounded-lg shadow-lg">
       <div className="h-96 w-full">
         <Bar options={chartOptions} data={chartData} />
       </div>
-    </div>
+    </Card>
   );
 };
 
-export default VentesParClientChart;
+export default AchatsParClientChart;

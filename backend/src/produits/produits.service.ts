@@ -7,28 +7,40 @@ import { Repository } from 'typeorm';
 export class ProduitsService {
   constructor(
     @InjectRepository(Produit)
-    private clientsRepository: Repository<Produit>,
+    private produitsRepository: Repository<Produit>,
   ) {}
 
   findAll(): Promise<Produit[]> {
-    return this.clientsRepository.find();
+    return this.produitsRepository.find();
+  }
+
+  async getProduitsAchetesParCategorie() {
+    return this.produitsRepository
+      .createQueryBuilder('produit')
+      .select('categorie.nom', 'categorie')
+      .addSelect('CAST(SUM(ventes.nombre) AS DECIMAL)', 'quantite_totale')
+      .innerJoin('produit.idCategorie', 'categorie')
+      .innerJoin('ventes', 'ventes', 'ventes.idProduitId = produit.id')
+      .groupBy('categorie.nom')
+      .orderBy('quantite_totale', 'DESC')
+      .getRawMany();
   }
 
   create(produit: Produit): Promise<Produit> {
-    return this.clientsRepository.save(produit);
+    return this.produitsRepository.save(produit);
   }
 
   async update(id: number, produit: Partial<Produit>): Promise<Produit[]> {
-    await this.clientsRepository.update(id, produit);
-    return this.clientsRepository.find();
+    await this.produitsRepository.update(id, produit);
+    return this.produitsRepository.find();
   }
 
   async remove(id: number): Promise<void> {
-    await this.clientsRepository.delete(id);
+    await this.produitsRepository.delete(id);
   }
 
   async findOne(id: number): Promise<Produit> {
-    const produit = await this.clientsRepository.findOneBy({ id });
+    const produit = await this.produitsRepository.findOneBy({ id });
     return produit;
   }
 }
