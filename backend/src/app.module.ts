@@ -7,6 +7,7 @@ import { ClientsModule } from './clients/clients.module';
 import { VentesModule } from './ventes/ventes.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: ['dist/**/*.entity{.js,.ts}'],
       synchronize: true,
     }),
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

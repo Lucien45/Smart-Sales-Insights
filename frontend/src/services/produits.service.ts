@@ -1,7 +1,7 @@
 import { IProduit } from './../../../backend/src/types/Produit';
 import axios from 'axios';
 
-export const API_URL = 'http://localhost:3000/products';
+export const API_URL = 'http://localhost:3000/produits';
 
 export const getProducts = async() : Promise<IProduit[]> => {
     const result = await axios.get(API_URL);
