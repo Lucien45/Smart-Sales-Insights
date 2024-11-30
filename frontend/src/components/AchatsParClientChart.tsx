@@ -71,13 +71,18 @@ const AchatsParClientChart = () => {
     },
   };
 
+          // Génération de couleurs aléatoires pour chaque catégorie
+  const backgroundColor = data.map(() => 
+    `hsl(${Math.random() * 360}, 70%, 50%)`
+  );
+  
   const chartData = {
     labels: data.map(item => item.client),
     datasets: [
       {
         label: 'Nombre de ventes',
         data: data.map(item => item.ventes),
-        backgroundColor: '#3b82f6',
+        backgroundColor: backgroundColor,
         borderColor: '#2563eb',
         borderWidth: 1,
       },

@@ -14,6 +14,11 @@ import { VentesService } from './ventes.service';
 export class VentesController {
   constructor(private readonly ventesService: VentesService) {}
 
+  @Get('user/:userId')
+  getVentesByUserId(@Param('userId') userId: number) {
+    return this.ventesService.getVentesByUserId(userId);
+  }
+
   @Get(':id')
   findOneById(@Param('id') id: string): Promise<Vente> {
     return this.ventesService.findOne(+id);
