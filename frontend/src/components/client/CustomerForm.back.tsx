@@ -90,9 +90,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
               Produit acheté:
             </label>
             <select name="produit" onChange={handleProductChange}>
-              <option value="" disabled selected>
-                Choisir un produit
-              </option>
+              <option value="" disabled selected>Choisir un produit</option>
               {availableProduct.map((p) => (
                 <option key={p.id} value={p.nom}>
                   {p.nom}

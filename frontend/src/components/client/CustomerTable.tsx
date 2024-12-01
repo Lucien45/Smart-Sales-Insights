@@ -1,5 +1,5 @@
 import { Edit, Info, Trash2 } from "lucide-react";
-import { Customer } from "../../types/Customer";
+import { Customer } from "../../types/DataCustomer";
 
 interface CustomerTableProps {
   customers: Customer[];

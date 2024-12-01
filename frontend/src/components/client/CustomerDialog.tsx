@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Customer } from "../../types/Customer";
+import { AvailableProduct, Customer } from "../../types/DataCustomer";
 import CustomerForm from "./CustomerForm";
 import CustomerInfo from "./CustomerInfo";
 
@@ -8,6 +8,7 @@ interface CustomerDialogProps {
   mode: "add" | "edit" | "view";
   onSave: (updatedCustomer: Customer) => void;
   onClose: () => void;
+  availableProduct: AvailableProduct[];
 }
 
 const CustomerDialog: React.FC<CustomerDialogProps> = ({
@@ -15,6 +16,7 @@ const CustomerDialog: React.FC<CustomerDialogProps> = ({
   mode,
   onSave,
   onClose,
+  availableProduct,
 }) => {
   const [updatedCustomer, setUpdatedCustomer] = useState<Customer>(customer);
 
@@ -36,6 +38,7 @@ const CustomerDialog: React.FC<CustomerDialogProps> = ({
               handleSave={handleSave}
               onClose={onClose}
               mode={mode}
+              availableProduct={availableProduct}
             />
           )}
         </div>
