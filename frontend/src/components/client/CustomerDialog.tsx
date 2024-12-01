@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { AvailableProduct, Customer } from "../../types/DataCustomer";
-import CustomerForm from "./CustomerForm";
 import CustomerInfo from "./CustomerInfo";
+import CustomerFormEdit from "./CustomerFormEdit";
+import CustomerFormAdd from "./CustomerFormAdd";
 
 interface CustomerDialogProps {
   customer: Customer;
@@ -29,16 +30,24 @@ const CustomerDialog: React.FC<CustomerDialogProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl p-6">
         <div className="space-y-4">
-          {mode === "view" ? (
+          {mode === "view" && (
             <CustomerInfo customer={customer} onClose={onClose} />
-          ) : (
-            <CustomerForm
-              customer={updatedCustomer}
-              onChange={setUpdatedCustomer}
+          )}
+          {mode === "edit" && (
+            <CustomerFormEdit
+              customer={customer}
               handleSave={handleSave}
+              onChange={setUpdatedCustomer}
               onClose={onClose}
-              mode={mode}
+            />
+          )}
+          {mode === "add" && (
+            <CustomerFormAdd
+              customer={customer}
               availableProduct={availableProduct}
+              handleSave={handleSave}
+              onChange={setUpdatedCustomer}
+              onClose={onClose}
             />
           )}
         </div>

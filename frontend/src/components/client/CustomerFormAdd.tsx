@@ -1,41 +1,37 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { AvailableProduct, Customer } from "../../types/DataCustomer";
 
-interface CustomerFormProps {
+interface CustomerFormAddProps {
   customer: Customer;
-  mode: "add" | "edit" | "view";
   availableProduct: AvailableProduct[];
   onChange: (updatedCustomer: Customer) => void;
   handleSave: () => void;
   onClose: () => void;
 }
 
-const CustomerForm: React.FC<CustomerFormProps> = ({
+const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
   customer,
-  mode,
   availableProduct,
   onChange,
   handleSave,
   onClose,
 }) => {
   const [curCustomer, setCurCustomer] = useState<Customer>({ ...customer });
+  const [selectedProduct, setSelectedProduct] =
+    useState<AvailableProduct | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const handleChange = (field: keyof Customer, value: string | number) => {
     const updatedFormData = { ...curCustomer, [field]: value };
     setCurCustomer(updatedFormData);
-    onChange(updatedFormData); // Passe les changements au parent
+    onChange(updatedFormData);
   };
-
-  const [selectedProduct, setSelectedProduct] =
-    useState<AvailableProduct | null>(null);
-
-  const [quantity, setQuantity] = useState<number>(1);
 
   const handleProductChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const productName = event.target.value;
     const product = availableProduct.find((p) => p.nom === productName) || null;
     setSelectedProduct(product);
-    setQuantity(1); // Reset quantity when product changes
+    setQuantity(1);
   };
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +44,9 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
 
   return (
     <div className="space-y-4 w-96">
-      <h3 className="text-xl font-semibold mb-4">
-        {mode === "edit" && "Modifier un Client"}
-        {mode === "add" && "Ajouter un client"}
-      </h3>
+      <h3 className="text-xl font-semibold mb-4">Ajouter un client</h3>
       <div>
-        <label htmlFor="">Prenom</label>
+        <label htmlFor="">Prénom</label>
         <input
           placeholder="Prénom"
           className="border rounded-md p-2 w-full"
@@ -66,6 +59,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
           className="border rounded-md p-2 w-full"
           value={curCustomer.lastName}
           onChange={(e) => handleChange("lastName", e.target.value)}
+          required
         />
         <label htmlFor="">Email</label>
         <input
@@ -74,48 +68,46 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
           className="border rounded-md p-2 w-full"
           value={curCustomer.email}
           onChange={(e) => handleChange("email", e.target.value)}
+          required
         />
-        <label htmlFor="">Telephone</label>
+        <label htmlFor="">Téléphone</label>
         <input
           placeholder="Téléphone"
           className="border rounded-md p-2 w-full"
           value={curCustomer.phone}
           onChange={(e) => handleChange("phone", e.target.value)}
+          required
         />
+        <div>
+          <label htmlFor="produit" className="pr-3">
+            Produit acheté:
+          </label>
+          <select name="produit" onChange={handleProductChange} required>
+            <option value="" disabled selected>
+              Choisir un produit
+            </option>
+            {availableProduct.map((p) => (
+              <option key={p.id} value={p.nom}>
+                {p.nom}
+              </option>
+            ))}
+          </select>
 
-        {mode === "add" && (
-          <div>
-            {/* Champ pour selectionner parmi les produit disponible */}
-            <label htmlFor="produit" className="pr-3">
-              Produit acheté:
-            </label>
-            <select name="produit" onChange={handleProductChange}>
-              <option value="" disabled selected>Choisir un produit</option>
-              {availableProduct.map((p) => (
-                <option key={p.id} value={p.nom}>
-                  {p.nom}
-                </option>
-              ))}
-            </select>
-
-            {/* Champ pour entrer le nombre du produit acheté */}
-            <br />
-            <label htmlFor="nombreProduit" className="pr-3">
-              Quantité:
-            </label>
-            <input
-              type="number"
-              name="nombreProduit"
-              id=""
-              min={1}
-              max={selectedProduct?.stock || 1}
-              value={quantity}
-              onChange={handleQuantityChange}
-              placeholder="1"
-              disabled={!selectedProduct}
-            />
-          </div>
-        )}
+          <br />
+          <label htmlFor="nombreProduit" className="pr-3">
+            Quantité:
+          </label>
+          <input
+            type="number"
+            name="nombreProduit"
+            min={1}
+            max={selectedProduct?.stock || 1}
+            value={quantity}
+            onChange={handleQuantityChange}
+            placeholder="1"
+            disabled={!selectedProduct}
+          />
+        </div>
       </div>
       <div className="flex justify-between space-x-4">
         <button
@@ -135,4 +127,4 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
   );
 };
 
-export default CustomerForm;
+export default CustomerFormAdd;
