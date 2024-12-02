@@ -10,6 +10,7 @@ const Parametres: React.FC = () => {
     const { user, isLoading, error } = useSelector((state: RootState) => state.auth);
     const [showModal, setShowModal] = useState(false);
     const [userInfo, setUserInfo] = useState({
+        userId: 0,
         username: '',
         email: '',
         role: '',
@@ -22,6 +23,7 @@ const Parametres: React.FC = () => {
             dispatch(getProfileUser());
         } else {
             setUserInfo({
+                userId: user.id,
                 username: user.username,
                 email: user.mail,
                 role: user.type || 'Utilisateur',

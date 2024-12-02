@@ -1,4 +1,3 @@
-
 import {
   CanActivate,
   ExecutionContext,
@@ -19,12 +18,10 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const payload = await this.jwtService.verifyAsync(
-        token,
-        {
-          secret: 'd42f2809715d96228dada6adbaf332396add73aa29bb0828796d78e9e501dd5a1178dca63f61a51ed605b7170a06be79fc2b387ede34e5b37ab7952433b0b413'
-        }
-      );
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret:
+          'd42f2809715d96228dada6adbaf332396add73aa29bb0828796d78e9e501dd5a1178dca63f61a51ed605b7170a06be79fc2b387ede34e5b37ab7952433b0b413',
+      });
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();

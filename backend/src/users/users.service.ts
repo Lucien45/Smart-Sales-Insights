@@ -72,4 +72,10 @@ export class UsersService {
   async logout() {
     return { message: 'logout succes' };
   }
+
+  async findAll() {
+    return this.utilisateurRepository.find({
+      select: ['id', 'username'], // Récupérer seulement les champs nécessaires
+    });
+  }
 }

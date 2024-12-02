@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import axios from 'axios';
+import { getProfileUser } from '../redux/authSlice';
 
 // Enregistrer les éléments nécessaires pour Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -8,16 +10,38 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const SalesChart = ({ userId }: { userId: number }) => {
   const [salesData, setSalesData] = useState<any>([]);
   const [chartData, setChartData] = useState<any>(null);
+  const [userRole, setUserRole] = useState('user');
+  const [usersList, setUsersList] = useState<any[]>([]); // Liste des utilisateurs
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const userData =  getProfileUser();
+      setUserRole(userData.role); // Assurez-vous que cette fonction retourne le rôle et les informations
+    };
+
+    fetchProfile();
+  }, []);
+
+  useEffect(() => {
+    if (userRole === 'superuser') {
+      const fetchUsers = async () => {
+        const response = await axios.get('http://localhost:3000/users');
+        setUsersList(response.data);
+        console.log(response);
+      };
+      fetchUsers();
+    }
+  }, [userRole]);
 
   useEffect(() => {
     const fetchSalesData = async () => {
-      const response = await fetch(`http://localhost:3000/ventes/user/${userId}`);
-      const data = await response.json();
+      const response = await axios.get(`http://localhost:3000/ventes/user/${userId}`);
+      const data = response.data;
       setSalesData(data);
     };
 
     fetchSalesData();
-  }, [userId]);
+  }, [userId]); // On écoute la mise à jour de selectedUser
 
   useEffect(() => {
     if (salesData.length > 0) {
@@ -41,8 +65,8 @@ const SalesChart = ({ userId }: { userId: number }) => {
 
   return (
     <div>
-      <h2>Évolution des ventes de l'utilisateur {userId}</h2>
-      {chartData && <Line data={chartData} />}
+      <h2>Évolution des ventes</h2>        
+      {chartData ? <Line data={chartData} /> : <div>Veuilez choisir un id utilisateur valide</div>}
     </div>
   );
 };
