@@ -1,39 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Card, Row, Col, Button, Modal, Form, Nav } from 'react-bootstrap';
-import { User, Users, PlusCircle } from 'lucide-react';
+import { Users, PlusCircle, User } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { clearError, getProfileUser } from '../../redux/authSlice';
+import { RootState, AppDispatch } from '../../redux/store';
+import { clearError, getAllUser, getProfileUser, register } from '../../redux/authSlice';
+import { Utils } from '../../utils/Utils';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 const Parametres: React.FC = () => {
-    const dispatch = useDispatch();
-    const { user, isLoading, error } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch<AppDispatch>();
+    const { user, isLoading } = useSelector((state: RootState) => state.auth);
     const [showModal, setShowModal] = useState(false);
     const [userInfo, setUserInfo] = useState({
         username: '',
-        email: '',
+        mail: '',
         role: '',
+        date_creation: '',
     });
+    const [ListUser, setListUser] = useState([]);
+    const [NewUser, setNewUser] = useState({
+        username: '', mail:'', password: '', confirme_mdp:'', role: ''
+    })
     const [selectedMenu, setSelectedMenu] = useState('info');
 
-    // Charger les données utilisateur depuis Redux
-    useEffect(() => {
-        if (!user) {
-            dispatch(getProfileUser());
+    const fetchUsers = async () => {
+        const resultAction = await dispatch(getAllUser());
+        if (getAllUser.fulfilled.match(resultAction)) {
+            setListUser(resultAction.payload);
         } else {
-            setUserInfo({
-                username: user.username,
-                email: user.mail,
-                role: user.type || 'Utilisateur',
-            });
+            Utils.errorPage('Erreur lors du chargement des utilisateurs.', 'Error');
         }
+    };
+
+    useEffect(() => {
+        dispatch(getProfileUser());
+        setUserInfo({
+            username: user?.username,
+            mail: user?.mail,
+            role: user?.type || 'Utilisateur',
+            date_creation: user?.dateCreation,
+        })
     }, [dispatch, user]);
 
-    // Réinitialiser les erreurs si la modal est fermée
     useEffect(() => {
         if (!showModal) {
             dispatch(clearError());
         }
     }, [showModal, dispatch]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        const { name, value } = e.target;
+        setNewUser((pevNew) => ({
+            ...pevNew,
+            [name]: value
+        }))
+    };
+    const handleSubmit = async (e: React.FormEvent) => {
+
+        e.preventDefault();
+        if (NewUser.password !== NewUser.confirme_mdp) {
+            return;
+        }
+
+        Utils.confirmMessage(
+            `Êtes-vous sûr de vouloir cree un compte pour ${NewUser.username} avec le role ${NewUser.role}`,
+            async () =>{
+                const data = {
+                    username: NewUser.username,
+                    mail: NewUser.mail,
+                    password: NewUser.password,
+                    role: NewUser.role
+                }
+                await dispatch(register(data));
+            },
+            () => {
+                console.log("Enregistrement annuler");
+            }
+        );
+        setNewUser({
+            username:'', mail: '', password:'', confirme_mdp: '', role: ''
+        })
+    };
 
     const handleEdit = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -42,11 +88,17 @@ const Parametres: React.FC = () => {
             [name]: value,
         }));
     };
-
     const handleSaveChanges = () => {
-        // Ajouter l'action pour sauvegarder les modifications utilisateur via Redux
         console.log('Updated User Info:', userInfo);
         setShowModal(false);
+    };
+
+
+    const handleEditUser = (id: string) => {
+        console.log(`Modifier l'utilisateur avec l'ID: ${id}`);
+    };
+    const handleDeleteUser = (id: string) => {
+        console.log(`Supprimer l'utilisateur avec l'ID: ${id}`)
     };
 
     const renderContent = () => {
@@ -63,7 +115,7 @@ const Parametres: React.FC = () => {
                             </div>
                             <div>
                                 <p><strong>Nom d'utilisateur:</strong> {userInfo.username}</p>
-                                <p><strong>Email:</strong> {userInfo.email}</p>
+                                <p><strong>Email:</strong> {userInfo.mail}</p>
                                 <p><strong>Rôle:</strong> {userInfo.role}</p>
                                 <Button variant="primary" onClick={() => setShowModal(true)}>
                                     Modifier les informations
@@ -78,24 +130,33 @@ const Parametres: React.FC = () => {
                         <Card.Body className="p-4">
                             <h2 className="fw-bold text-center">Ajouter un nouveau compte</h2>
                             {/* Formulaire d'ajout d'un nouveau compte */}
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="newUsername" className="mb-3">
                                     <Form.Label>Nom d'utilisateur</Form.Label>
-                                    <Form.Control type="text" placeholder="Entrez le nom d'utilisateur" />
+                                    <Form.Control type="text" name='username' value={NewUser.username} onChange={handleChange} placeholder="Entrez le nom d'utilisateur" required />
                                 </Form.Group>
                                 <Form.Group controlId="newEmail" className="mb-3">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" placeholder="Entrez l'email" />
+                                    <Form.Control type="email" name='mail' value={NewUser.mail} onChange={handleChange} placeholder="Entrez l'email" required />
+                                </Form.Group>
+                                <Form.Group controlId="newPassword" className="mb-3">
+                                    <Form.Label>Mot de passe</Form.Label>
+                                    <Form.Control type="password" name='password' value={NewUser.password} onChange={handleChange} placeholder="Entrez le mot de passe" required />
+                                </Form.Group>
+                                <Form.Group controlId="comfirmeNewPassword" className="mb-3">
+                                    <Form.Label>Confirmer Le mot de passe</Form.Label>
+                                    <Form.Control type="password" name='confirme_mdp' value={NewUser.confirme_mdp} onChange={handleChange} placeholder="Confirmer le mot de passe" required />
                                 </Form.Group>
                                 <Form.Group controlId="newRole" className="mb-3">
                                     <Form.Label>Rôle</Form.Label>
-                                    <Form.Control as="select">
-                                        <option>Utilisateur</option>
-                                        <option>Admin</option>
-                                    </Form.Control>
+                                    <Form.Select name="role" value={NewUser.role} onChange={(e) => setNewUser({ ...NewUser, role: e.target.value })}>
+                                        <option value="">selectionez un role</option>
+                                        <option value="superuser">superuser</option>
+                                        <option value="user">user</option>
+                                    </Form.Select>
                                 </Form.Group>
-                                <Button variant="success" type="submit">
-                                    Ajouter
+                                <Button variant="success" type="submit" className="w-100 mb-3" disabled={isLoading}>
+                                    {isLoading ? 'Enregistrement...' : 'Ajouter'}
                                 </Button>
                             </Form>
                         </Card.Body>
@@ -106,12 +167,31 @@ const Parametres: React.FC = () => {
                     <Card className="shadow">
                         <Card.Body className="p-4">
                             <h2 className="fw-bold text-center">Liste des utilisateurs</h2>
-                            {/* Liste des utilisateurs */}
-                            <ul>
-                                <li>John Doe - Admin</li>
-                                <li>Jane Smith - Utilisateur</li>
-                                <li>Mark Wilson - Admin</li>
-                            </ul>
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom d'utilisateur</th>
+                                            <th>Email</th>
+                                            <th>Type</th>
+                                            <th>Date de création</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {ListUser.map((utilisateur: any) => (
+                                        <tr key={utilisateur.id}>
+                                            <td>{utilisateur.username}</td>
+                                            <td>{utilisateur.mail}</td>
+                                            <td>{utilisateur.type}</td>
+                                            <td>{new Date(utilisateur.date_creation).toLocaleDateString()}</td>
+                                            <td className="action-icons">
+                                                <FaEdit className="icon edit-icon" onClick={() => handleEditUser(utilisateur.id)} />
+                                                <FaTrash className="icon delete-icon" onClick={() => handleDeleteUser(utilisateur.id)} />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
                         </Card.Body>
                     </Card>
                 );
@@ -119,6 +199,10 @@ const Parametres: React.FC = () => {
                 return null;
         }
     };
+
+    useEffect(() =>{
+        fetchUsers()
+    }, [])
 
     return (
         <Container className="py-4">
@@ -163,7 +247,7 @@ const Parametres: React.FC = () => {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="username" className="mb-3">
-                            <Form.Label>Nom d'utilisateur</Form.Label>
+                            <Form.Label>Nom d'utilisateur *</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="username"
@@ -171,14 +255,22 @@ const Parametres: React.FC = () => {
                                 onChange={handleEdit}
                             />
                         </Form.Group>
-                        <Form.Group controlId="email" className="mb-3">
-                            <Form.Label>Email</Form.Label>
+                        <Form.Group controlId="mail" className="mb-3">
+                            <Form.Label>Email *</Form.Label>
                             <Form.Control
                                 type="email"
-                                name="email"
-                                value={userInfo.email}
+                                name="mail"
+                                value={userInfo.mail}
                                 onChange={handleEdit}
                             />
+                        </Form.Group>
+                        <Form.Group controlId="role" className="mb-3">
+                            <Form.Label>Role *</Form.Label>
+                            <Form.Select name="role" value={userInfo.role} onChange={(e) => setUserInfo({ ...userInfo, role: e.target.value })}>
+                                <option value="">selectionez un role</option>
+                                <option value="superuser">superuser</option>
+                                <option value="user">user</option>
+                            </Form.Select>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

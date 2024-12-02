@@ -8,7 +8,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 
 const AuthPage: React.FC = () => {
   const [DataLogin, SetDataLogin] = useState({
-    identifier: '', password: '',
+    identification: '', password: '',
   })
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -36,8 +36,8 @@ const AuthPage: React.FC = () => {
           <Form.Control
             type="text"
             placeholder="Enter email or username"
-            value={DataLogin.identifier}
-            onChange={(e) => SetDataLogin({...DataLogin, identifier: e.target.value})}
+            value={DataLogin.identification}
+            onChange={(e) => SetDataLogin({...DataLogin, identification: e.target.value})}
             required
           />
         </Form.Group>
