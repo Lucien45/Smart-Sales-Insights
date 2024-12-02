@@ -1,59 +1,44 @@
 import React from "react";
-import { Customer } from "../../types/DataCustomer";
+import { Customer } from "../../types/Customer";
+import { Sales } from "../../types/Sales";
+import { Product } from "../../types/Product";
+import PurchaseHistoryTable from "./PurchaseHistoryTable";
 
 interface CustomerInfoProps {
   customer: Customer;
+  sales: Sales[];
+  products: Product[];
   onClose: () => void;
 }
 
-const CustomerInfo: React.FC<CustomerInfoProps> = ({ customer, onClose }) => {
+const CustomerInfo: React.FC<CustomerInfoProps> = ({
+  customer,
+  sales,
+  products,
+  onClose,
+}) => {
+  const historiqueClient = sales
+    .filter((s) => s.idClient === customer.id)
+    .map((achat) => {
+      const produit = products.find((p) => p.id === achat.idProduit);
+      return {
+        ...achat,
+        nomProduit: produit ? produit.nom : "Produit inconnu",
+      };
+    });
+
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-1">Informations</h3>
-      <div>
-        <p>
-          <strong>Email:</strong> {customer.email}
-        </p>
-        <p>
-          <strong>Téléphone:</strong> {customer.phone}
-        </p>
-        <p>
-          <strong>Ajouté par:</strong> {customer.user}
-        </p>
-      </div>
+      <h2>
+        {customer.firstName} {customer.lastName}
+      </h2>
+      <p>Email: {customer.email}</p>
+      <p>Téléphone: {customer.phone}</p>
+      <p>ID Utilisateur: {customer.idUser}</p>
 
-      {/* Preference du client */}
-      <span className="text-xl font-semibold mb-1 mt-6">
-        Preference du client:{" "}
-      </span>
-      <span>
-        {customer.mostPurchasedProduct?.productName
-          ? `${customer.mostPurchasedProduct?.productName}  (avec ${customer.mostPurchasedProduct?.totalQuantity} unité(s) acheté(s))`
-          : "Pas encore!!!"}
-      </span>
+      <h3>Historique d'Achats</h3>
+      <PurchaseHistoryTable salesWithProductName={historiqueClient} />
 
-      {/* Tableau historique de vente */}
-      <h3 className="text-xl font-semibold mb-1 mt-6">Historique d'achats</h3>
-      <table className="w-full bg-white">
-        <thead>
-          <tr className="bg-gray-100 border-b">
-            <th className="p-3">Produit</th>
-            <th className="p-3">Date</th>
-            <th className="p-3">Quantite</th>
-            <th className="p-3">Prix</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customer.purchaseHistory.map((purchase) => (
-            <tr className="border-b hover:bg-gray-50">
-              <td className="p-3">{purchase.productName}</td>
-              <td className="p-3">{purchase.date}</td>
-              <td className="p-3">{purchase.quantity}</td>
-              <td className="p-3">{purchase.price}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
       <button
         className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 mt-3"
         onClick={onClose}

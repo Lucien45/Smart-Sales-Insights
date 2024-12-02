@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Customer } from "../../types/DataCustomer";
+import { Customer } from "../../types/Customer";
 
 interface CustomerFormEditProps {
   customer: Customer;

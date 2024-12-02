@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { AvailableProduct, Customer } from "../../types/DataCustomer";
+import { Product } from "../../types/Product";
+import { Customer } from "../../types/Customer";
 
 interface CustomerFormAddProps {
   customer: Customer;
-  availableProduct: AvailableProduct[];
+  availableProduct: Product[];
   onChange: (updatedCustomer: Customer) => void;
   handleSave: () => void;
   onClose: () => void;
@@ -17,8 +18,7 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
   onClose,
 }) => {
   const [curCustomer, setCurCustomer] = useState<Customer>({ ...customer });
-  const [selectedProduct, setSelectedProduct] =
-    useState<AvailableProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
 
   const handleChange = (field: keyof Customer, value: string | number) => {
