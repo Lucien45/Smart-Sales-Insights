@@ -1,3 +1,4 @@
+import { Categorie } from 'src/categories/entities/categorie.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vente } from './entities/vente.entity';
@@ -46,5 +47,26 @@ export class VentesService {
     }));
 
     return salesData;
+  }
+
+  async getVentesByIdCategorie(categorieID: number): Promise<Vente[]> {
+    return this.ventesRepository
+      .createQueryBuilder('vente')
+      .innerJoinAndSelect('vente.idProduit', 'produit')
+      .where('produit.idCategorie = :categorieID', { categorieID })
+      .getMany();
+  }
+
+  async getVentesUserParCategorie(
+    userId: number,
+    categorieId: number,
+  ): Promise<Vente[]> {
+    return this.ventesRepository
+      .createQueryBuilder('vente')
+      .innerJoinAndSelect('vente.idProduit', 'produit')
+      .innerJoinAndSelect('vente.idClient', 'client')
+      .where('client.id = :userId', { userId })
+      .andWhere('produit.idCategorie = :categorieId', { categorieId })
+      .getMany();
   }
 }

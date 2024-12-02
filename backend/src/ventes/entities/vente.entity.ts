@@ -18,25 +18,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-// @Entity('ventes')
-// export class Vente {
-//   @PrimaryGeneratedColumn()
-//   id: number;
-
-//   @Column()
-//   nombre: number;
-
-//   @Column()
-//   date_achat: Date;
-
-//   @ManyToOne(() => Client, (client) => client.id)
-//   @JoinColumn({ name: 'idClientId' })
-//   idClient: Client;
-
-//   @ManyToOne(() => Produit, (produit) => produit.id)
-//   @JoinColumn({ name: 'idProduitId' })
-//   idProduit: Produit;
-// }
 @Entity('ventes')
 export class Vente {
   @PrimaryGeneratedColumn()

@@ -14,6 +14,14 @@ import { VentesService } from './ventes.service';
 export class VentesController {
   constructor(private readonly ventesService: VentesService) {}
 
+  @Get('user/:userId/categorie/:categorieId')
+  async getVentesUserParCategorie(
+    @Param('userId') userId: number,
+    @Param('categorieId') categorieId: number,
+  ): Promise<Vente[]> {
+    return this.ventesService.getVentesUserParCategorie(userId, categorieId);
+  }
+
   @Get('user/:userId')
   getVentesByUserId(@Param('userId') userId: number) {
     return this.ventesService.getVentesByUserId(userId);
@@ -45,5 +53,10 @@ export class VentesController {
   @Delete(':id')
   remove(@Param('id') id: number): Promise<void> {
     return this.ventesService.remove(id);
+  }
+
+  @Get('categories/:id')
+  getVentesByCategorie(@Param('id') id: number): Promise<Vente[]> {
+    return this.ventesService.getVentesByIdCategorie(id);
   }
 }
