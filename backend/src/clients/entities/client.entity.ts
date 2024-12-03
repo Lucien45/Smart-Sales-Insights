@@ -21,5 +21,5 @@ export class Client {
   @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, {
     nullable: false,
   })
-  idUtilisateur: Utilisateur;
+  idUtilisateur: number;
 }
