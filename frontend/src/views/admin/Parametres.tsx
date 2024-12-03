@@ -19,6 +19,7 @@ export const Parametres: React.FC = () => {
         mail: '',
         role: '',
         date_creation: '',
+        date_mise_jour: '',
     });
     const [ListUser, setListUser] = useState([]);
     const [NewUser, setNewUser] = useState({
@@ -46,6 +47,7 @@ export const Parametres: React.FC = () => {
             mail: user?.mail,
             role: user?.type || 'Utilisateur',
             date_creation: user?.dateCreation,
+            date_mise_jour: user?.dateMiseJour,
         })
     }, [dispatch, user]);
 
@@ -186,6 +188,7 @@ export const Parametres: React.FC = () => {
                                             <th>Email</th>
                                             <th>Type</th>
                                             <th>Date de création</th>
+                                            <th>Date de Mise a jour</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -196,6 +199,7 @@ export const Parametres: React.FC = () => {
                                             <td>{utilisateur.mail}</td>
                                             <td>{utilisateur.type}</td>
                                             <td>{new Date(utilisateur.date_creation).toLocaleDateString()}</td>
+                                            <td>{new Date(utilisateur.date_mise_jour).toLocaleDateString()}</td>
                                             <td className="action-icons">
                                                 <FaEdit className="icon edit-icon" onClick={() => handleEditUser(utilisateur.id)} />
                                                 <FaTrash className="icon delete-icon" onClick={() => handleDeleteUser(utilisateur.id)} />

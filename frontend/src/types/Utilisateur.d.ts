@@ -4,6 +4,7 @@ export interface User {
   mail: string;
   type: 'user' | 'superuser';
   dateCreation: string;
+  dateMiseJour: string;
 }
 
 export interface AuthState {
