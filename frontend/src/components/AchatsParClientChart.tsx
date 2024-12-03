@@ -8,7 +8,6 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { Card } from 'react-bootstrap';
 
-// Enregistrer les composants ChartJS nécessaires
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -39,7 +38,6 @@ const AchatsParClientChart = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -61,21 +59,34 @@ const AchatsParClientChart = () => {
     scales: {
       x: {
         ticks: {
-          maxRotation: 45,
-          minRotation: 45,
+          display: false,
+        },
+        grid: {
+          display: false,
         },
       },
       y: {
         beginAtZero: true,
       },
     },
+    layout: {
+      padding: {
+        left: 4,
+        right: 4
+      },
+      margin: {
+        left: 4,
+        right: 4
+      },
+    },
+    barThickness: 30,
+    categoryPercentage: 1.0 // Utilise 100% de l'espace de la catégorie
   };
 
-          // Génération de couleurs aléatoires pour chaque catégorie
-  const backgroundColor = data.map(() => 
+  const backgroundColor = data.map(() =>
     `hsl(${Math.random() * 360}, 70%, 50%)`
   );
-  
+
   const chartData = {
     labels: data.map(item => item.client),
     datasets: [
@@ -91,17 +102,17 @@ const AchatsParClientChart = () => {
 
   if (isLoading) {
     return (
-      <Card className="w-full h-96 border rounded-lg shadow-lg">
+      <div className="rounded-lg shadow-lg bg-white p-4">
         <div className="flex items-center justify-center h-full">
           <p>Chargement des données...</p>
         </div>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full p-4 border rounded-lg shadow-lg">
-      <div className="h-96 w-full">
+    <Card className="rounded-lg shadow-lg bg-white p-4">
+      <div>
         <Bar options={chartOptions} data={chartData} />
       </div>
     </Card>

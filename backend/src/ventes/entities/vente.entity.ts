@@ -1,13 +1,3 @@
-// import { Client } from 'src/clients/entities/client.entity';
-// import { Produit } from 'src/produits/entities/produit.entity';
-// import {
-//   Column,
-//   Entity,
-//   JoinColumn,
-//   ManyToOne,
-//   PrimaryGeneratedColumn,
-// } from 'typeorm';
-
 import { Client } from 'src/clients/entities/client.entity';
 import { Produit } from 'src/produits/entities/produit.entity';
 import {
@@ -26,7 +16,7 @@ export class Vente {
   @Column()
   nombre: number;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date_achat: Date;
 
   @ManyToOne(() => Client, { eager: true })

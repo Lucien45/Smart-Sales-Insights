@@ -142,7 +142,7 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="p-4">
       <Line data={chartData} options={options} />
     </div>
   );

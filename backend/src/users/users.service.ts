@@ -18,19 +18,16 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(data: {
-    username: string;
-    mail: string;
-    password: string;
-    type: 'user' | 'superuser';
-  }) {
+  async register(data: Omit<FormDataUser, 'id'>) {
     const { username, mail, password, type } = data;
-
+    if (!username || !mail || !password) {
+      throw new BadRequestException('Données utilisateur incomplètes.');
+    }
     const existingUser = await this.utilisateurRepository.findOne({
       where: { mail },
     });
     if (existingUser) {
-      throw new BadRequestException('Email already in use.');
+      throw new BadRequestException('Cet email est déjà utilisé.');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -62,7 +59,19 @@ export class UsersService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Mot de passe incorrect.');
     }
-    return user;
+
+    const payload = { sub: user.id, username: user.username, type: user.type };
+    const token = this.jwtService.sign(payload);
+
+    return {
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        mail: user.mail,
+        type: user.type,
+      },
+    };
   }
 
   async getProfileUser(userId: number) {

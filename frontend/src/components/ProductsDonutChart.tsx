@@ -71,11 +71,11 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="w-48 h-96 p-4 flex flex-col justify-center items-center">
+    <Card className="flex flex-col justify-center items-center rounded-lg p-4">
       <h2 className="text-xl font-bold mb-4 text-center">
         Distribution des Produits par Catégorie
       </h2>
-      <div className="w-48 h-48 flex justify-center items-center">
+      <div className="flex justify-center items-center">
         <Doughnut data={chartData} options={options} />
       </div>
     </Card>

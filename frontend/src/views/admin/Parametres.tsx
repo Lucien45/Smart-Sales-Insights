@@ -6,13 +6,11 @@ import { RootState, AppDispatch } from '../../redux/store';
 import { clearError, getAllUser, getProfileUser, register } from '../../redux/authSlice';
 import { Utils } from '../../utils/Utils';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-
 const Parametres: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { user, isLoading } = useSelector((state: RootState) => state.auth);
     const [showModal, setShowModal] = useState(false);
     const [userInfo, setUserInfo] = useState({
-        userId: 0,
         username: '',
         mail: '',
         role: '',
@@ -28,8 +26,10 @@ const Parametres: React.FC = () => {
         const resultAction = await dispatch(getAllUser());
         if (getAllUser.fulfilled.match(resultAction)) {
             setListUser(resultAction.payload);
+        } else {
+            Utils.errorPage('Erreur lors du chargement des utilisateurs.', 'Error');
         }
-    }
+    };
 
     useEffect(() => {
         dispatch(getProfileUser());
