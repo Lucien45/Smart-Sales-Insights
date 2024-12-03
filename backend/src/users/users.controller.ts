@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   BadRequestException,
   Body,
@@ -5,7 +6,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
   Req,
@@ -79,17 +79,24 @@ export class UsersController {
     return this.authService.getAllUser();
   }
 
+  @Get(':id')
+  async getUser(@Param('id') id: number) {
+    if (!id) {
+      throw new BadRequestException(
+        'Impossible de récupérer le profil utilisateur.',
+      );
+    }
+    return this.authService.getUserById(id);
+  }
+
   @Put('update/:id')
   update(@Param('id') id: number, @Body() data: Partial<FormDataUser>) {
     return this.authService.updateUser(id, data);
   }
 
-  @Patch('update/:id')
-  async updateUser(
-    @Param('id') id: string,
-    @Body() data: Partial<FormDataUser>,
-  ) {
-    return this.authService.updateUser(+id, data);
+  @Delete('delete/:id')
+  remove(@Param('id') id: string) {
+    return this.authService.removeUser(+id);
   }
 
   @Post('logout')

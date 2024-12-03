@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   BadRequestException,
   Injectable,
@@ -84,6 +85,16 @@ export class UsersService {
     return user;
   }
 
+  async getUserById(id: number){
+    const user = await this.utilisateurRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+    return user;
+  }
+
   async getAllUser() {
     const user = await this.utilisateurRepository.find();
     return user;
@@ -101,7 +112,7 @@ export class UsersService {
     return this.utilisateurRepository.findOneBy({ id });
   }
 
-  async deleteUser(id: number) {
+  async removeUser(id: number) {
     await this.utilisateurRepository.delete(id);
     return this.utilisateurRepository.find();
   }

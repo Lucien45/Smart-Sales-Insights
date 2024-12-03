@@ -1,4 +1,5 @@
-import { Utilisateur } from "src/users/entities/utilisateur.entity";
+/* eslint-disable prettier/prettier */
+import { Utilisateur } from 'src/users/entities/utilisateur.entity';
 
 export interface IClient {
   id: number;

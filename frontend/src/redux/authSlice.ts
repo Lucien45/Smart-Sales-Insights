@@ -3,7 +3,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Utils } from '../utils/Utils';
-import { AuthState, LoginCredentials, RegisterData, UpdateDataUser } from '../types/Utilisateur';
+import { AuthState, LoginCredentials, RegisterData } from '../types/Utilisateur';
 
 const API_URL = 'http://localhost:3000/users';
 
@@ -52,22 +52,9 @@ export const getAllUser = createAsyncThunk('auth/getAllUser', async(_, { rejectW
   }
 })
 
-export const updateUser = createAsyncThunk(
-  'auth/updateUser',
-  async ({ id, data }: { id: string; data: Partial<UpdateDataUser> }, { rejectWithValue }) => {
-      try {
-          const response = await axios.patch(`${API_URL}/update/${id}`, data);
-          return response.data;
-      } catch (error: any) {
-          return rejectWithValue(error.response.data);
-      }
-  }
-
-);
-
 export const getProfileUser = createAsyncThunk(
   'auth/getProfileUser',
-  async (_, { rejectWithValue }) => {
+  async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No token found');
@@ -77,7 +64,8 @@ export const getProfileUser = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
+      console.log(error.response?.data?.message || 'Failed to fetch profile');
+      
     }
   }
 );
@@ -157,19 +145,6 @@ const authSlice = createSlice({
       .addCase(getAllUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.users = state.users.map((user) =>
-          user.id === action.payload.id ? { ...user, ...action.payload } : user
-        );
-        Utils.success('Utilisateur mis à jour avec succès.', 'Update Successful');
-      })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.error = action.payload as string;
-        Utils.errorPage(
-          state.error || 'Échec de la mise à jour de l’utilisateur.',
-          'Update Failed'
-        );
       });
   },
 });

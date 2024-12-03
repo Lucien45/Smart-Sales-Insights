@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Page404 from '../views/Page404';
 import { Layout } from '../components/admin/Layout';
 import Dashboard from '../views/admin/Dashboard';
-import Parametres from '../views/admin/Parametres';
+import {Parametres} from '../views/admin/Parametres';
 
 interface AdminRouteProps {
     setLoading: (value: boolean) => void;

@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { Container, Card, Row, Col, Button, Modal, Form, Nav } from 'react-bootstrap';
+import { Container, Card, Row, Col, Button, Form, Nav } from 'react-bootstrap';
 import { Users, PlusCircle, User } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { clearError, getAllUser, getProfileUser, register } from '../../redux/authSlice';
 import { Utils } from '../../utils/Utils';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-const Parametres: React.FC = () => {
+import { UpdateUserProps } from '../../types/Utilisateur';
+import axios from 'axios';
+
+export const Parametres: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { user, isLoading } = useSelector((state: RootState) => state.auth);
-    const [showModal, setShowModal] = useState(false);
+    const { user } = useSelector((state: RootState) => state.auth);
     const [userInfo, setUserInfo] = useState({
+        id: 0,
         username: '',
         mail: '',
         role: '',
@@ -21,6 +25,9 @@ const Parametres: React.FC = () => {
         username: '', mail:'', password: '', confirme_mdp:'', role: ''
     })
     const [selectedMenu, setSelectedMenu] = useState('info');
+
+    const [showUpdate, setShowUpdate] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState<number>(null);
 
     const fetchUsers = async () => {
         const resultAction = await dispatch(getAllUser());
@@ -34,6 +41,7 @@ const Parametres: React.FC = () => {
     useEffect(() => {
         dispatch(getProfileUser());
         setUserInfo({
+            id: user?.id,
             username: user?.username,
             mail: user?.mail,
             role: user?.type || 'Utilisateur',
@@ -42,10 +50,10 @@ const Parametres: React.FC = () => {
     }, [dispatch, user]);
 
     useEffect(() => {
-        if (!showModal) {
+        if (!showUpdate) {
             dispatch(clearError());
         }
-    }, [showModal, dispatch]);
+    }, [dispatch]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         const { name, value } = e.target;
@@ -71,6 +79,7 @@ const Parametres: React.FC = () => {
                     role: NewUser.role
                 }
                 await dispatch(register(data));
+                fetchUsers();
             },
             () => {
                 console.log("Enregistrement annuler");
@@ -81,24 +90,27 @@ const Parametres: React.FC = () => {
         })
     };
 
-    const handleEdit = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setUserInfo((prevInfo) => ({
-            ...prevInfo,
-            [name]: value,
-        }));
-    };
-    const handleSaveChanges = () => {
-        console.log('Updated User Info:', userInfo);
-        setShowModal(false);
+    const handleEditUser = (id: number) => {
+        setSelectedUserId(id);
+        setShowUpdate(true);
     };
 
-
-    const handleEditUser = (id: string) => {
-        console.log(`Modifier l'utilisateur avec l'ID: ${id}`);
-    };
     const handleDeleteUser = (id: string) => {
-        console.log(`Supprimer l'utilisateur avec l'ID: ${id}`)
+        Utils.confirmMessage(
+            `Êtes-vous sûr de vouloir supprimer cet utilisateur ?`, 
+            async () => {
+                try {
+                    await axios.delete(`http://localhost:3000/users/delete/${id}`);
+                    Utils.success('utilisateur supprimée avec succès', 'success');
+                    fetchUsers();
+                } catch (error) {
+                    Utils.errorPage(`Erreur lors de la suppression de la responsabilité: ${error}`, 'error');
+                }
+            },
+            () => { 
+              console.log('suppression annuler .');
+            }
+        );
     };
 
     const renderContent = () => {
@@ -117,7 +129,7 @@ const Parametres: React.FC = () => {
                                 <p><strong>Nom d'utilisateur:</strong> {userInfo.username}</p>
                                 <p><strong>Email:</strong> {userInfo.mail}</p>
                                 <p><strong>Rôle:</strong> {userInfo.role}</p>
-                                <Button variant="primary" onClick={() => setShowModal(true)}>
+                                <Button variant="primary" onClick={() => handleEditUser(userInfo.id)}>
                                     Modifier les informations
                                 </Button>
                             </div>
@@ -155,8 +167,8 @@ const Parametres: React.FC = () => {
                                         <option value="user">user</option>
                                     </Form.Select>
                                 </Form.Group>
-                                <Button variant="success" type="submit" className="w-100 mb-3" disabled={isLoading}>
-                                    {isLoading ? 'Enregistrement...' : 'Ajouter'}
+                                <Button variant="success" type="submit" className="w-100 mb-3">
+                                    Ajouter
                                 </Button>
                             </Form>
                         </Card.Body>
@@ -240,51 +252,149 @@ const Parametres: React.FC = () => {
             </Row>
 
             {/* Modal pour modification des informations */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modifier les informations</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="username" className="mb-3">
-                            <Form.Label>Nom d'utilisateur *</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="username"
-                                value={userInfo.username}
-                                onChange={handleEdit}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="mail" className="mb-3">
-                            <Form.Label>Email *</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="mail"
-                                value={userInfo.mail}
-                                onChange={handleEdit}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="role" className="mb-3">
-                            <Form.Label>Role *</Form.Label>
-                            <Form.Select name="role" value={userInfo.role} onChange={(e) => setUserInfo({ ...userInfo, role: e.target.value })}>
-                                <option value="">selectionez un role</option>
-                                <option value="superuser">superuser</option>
-                                <option value="user">user</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Annuler
-                    </Button>
-                    <Button variant="primary" onClick={handleSaveChanges}>
-                        Enregistrer
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {showUpdate && <UpdateUser id={selectedUserId} onClose={() => { setShowUpdate(false); fetchUsers(); }} />}
         </Container>
     );
 };
 
-export default Parametres;
+
+export const UpdateUser:React.FC<UpdateUserProps> = ({ id, onClose }) => {
+    const [UserData, setUserData] = useState({ 
+        username: '', mail: '', role: '',  new_password:'', confirme_mdp: ''
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [initialData, setInitialData] = useState({
+        username: '',
+        mail: '',
+        role: '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) =>{
+        e.preventDefault();
+
+        // Compare les valeurs pour identifier les champs modifiés
+        const updatedFields: Partial<typeof UserData> = {};
+        Object.keys(UserData).forEach((key) => {
+            if (UserData[key as keyof typeof UserData] !== initialData[key as keyof typeof initialData] && key !== 'new_password' && key !== 'confirme_mdp') {
+                updatedFields[key as keyof typeof UserData] = UserData[key as keyof typeof UserData];
+            }
+        });
+
+        // Inclure le mot de passe s'il est renseigné
+        if (UserData.new_password) {
+            if (UserData.new_password === UserData.confirme_mdp) {
+                updatedFields.new_password = UserData.new_password;
+            } else {
+                Utils.errorPage("Les mots de passe ne correspondent pas", 'error');
+                return;
+            }
+        }
+
+        Utils.confirmMessage(
+        `Êtes-vous sûr de vouloir mettre à jour l'utilisateur ${UserData.username}  avec ces informations [ ${UserData.mail}, ${UserData.role} ]?`,
+            async () => {
+                try {
+                    await axios.put(`http://localhost:3000/users/update/${id}`, updatedFields);
+                    Utils.success(" mis à jour avec succès!",'succcess');
+                    onClose();
+                } catch (error: any) {
+                    Utils.errorPage(error.response?.data?.detail || 'Une erreur s\'est produite','error');
+                }
+            },
+            () => { 
+                console.log('Mise à jour annulée.');
+            }
+        );
+    }    
+
+    useEffect(() => {
+        const fetchUser = async() => {
+            try {
+                const response = await axios.get(`http://localhost:3000/users/${id}`);
+                setUserData({
+                    username: response.data.username,
+                    mail: response.data.mail,
+                    role: response.data.type,
+                });
+              } catch (error: any) {
+                console.log(error.response?.data?.message || 'Failed to fetch profile');
+                
+            }
+        }
+        fetchUser();
+    }, [id]);
+    return (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title">Modifier les informations</h5>
+                    <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                    <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label">Nom d'utilisateur</label>
+                        <input 
+                        type="text" 
+                        className="form-control" 
+                        value={UserData.username}
+                        onChange={(e) => setUserData({ ...UserData, username: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input 
+                        type="email" 
+                        className="form-control" 
+                        value={UserData.mail}
+                        onChange={(e) => setUserData({ ...UserData, mail: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Role</label>
+                        <select 
+                            className="form-control" 
+                            value={UserData.role} 
+                            onChange={(e) => setUserData({ ...UserData, role: e.target.value })} 
+                        >
+                            <option value="">Sélectionnez un rôle</option>
+                            <option value="superuser">Superuser</option>
+                            <option value="user">Utilisateur</option>
+                        </select>
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Nouveau Mot de passe</label>
+                        <input 
+                        type="password" 
+                        className="form-control" 
+                        value={UserData.new_password}
+                        onChange={(e) => setUserData({ ...UserData, new_password: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Nouveau Mot de passe</label>
+                        <input 
+                        type="password" 
+                        className="form-control" 
+                        value={UserData.confirme_mdp}
+                        onChange={(e) => setUserData({ ...UserData, confirme_mdp: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                        <button type="submit" className="btn btn-primary">Enregistrer</button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>Annuler</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    )
+}

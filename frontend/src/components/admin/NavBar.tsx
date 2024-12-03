@@ -32,7 +32,7 @@ const NavBar = () => {
         console.log('Utilisateur non connecté ou token absent.');
         
         }
-  }, [dispatch, token]);
+  }, [dispatch, token, navigate]);
     return (
         <Navbar bg="white" expand="lg" className="shadow-sm layout-navbar">
             <Container fluid>

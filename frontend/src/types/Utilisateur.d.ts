@@ -31,16 +31,11 @@ export interface UpdateDataUser  {
   username: string;
   mail: string;
   password: string;
+  confirme_mdp: string,
   type: string;
 }
 
 export interface UpdateUserProps {
-  id: string;
-  showModal: boolean;
-  onHide: () => void;
-  currentData: {
-      username: string;
-      mail: string;
-      role: string;
-  };
+  id: number;
+  onClose: () => void;
 }
