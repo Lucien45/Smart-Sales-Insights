@@ -14,7 +14,7 @@ const Sidebar = () => {
             <BarChart2 size={18} className="me-2" />
             Analyses
         </Nav.Link>
-        <Nav.Link as={Link} to="#" className="sidebar-link">
+        <Nav.Link as={Link} to="/admin/clients" className="sidebar-link">
             <Users size={18} className="me-2" />
             Gestion des Clients
         </Nav.Link>

@@ -12,8 +12,15 @@ export class Client {
   @Column()
   prenom: string;
 
+  @Column()
+  numeroPhone: string;
+
+  @Column()
+  email: string;
+
   @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, {
     nullable: false,
   })
   idUtilisateur: Utilisateur;
+
 }
