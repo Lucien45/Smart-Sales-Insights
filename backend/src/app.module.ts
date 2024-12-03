@@ -20,13 +20,8 @@ import { StatsModule } from './stats/stats.module';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-<<<<<<< HEAD
       username: 'postgres',
       password: 'azerty',
-=======
-      username: 'toavina',
-      password: '123456',
->>>>>>> origin/feat/dashboard
       database: 'smart_sales',
       entities: ['dist/**/*.entity{.js,.ts}'],
       synchronize: true,
