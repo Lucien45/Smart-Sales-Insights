@@ -8,7 +8,7 @@ export class Categorie {
 
   @Column()
   nom: string;
-  
+
   @OneToMany(() => Produit, (produit) => produit.idCategorie)
   produits: Produit[];
 }

@@ -2,39 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
-import { IClient } from 'src/types/Client';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(Client)
-    private readonly clientsRepository: Repository<Client>,
+    private clientsRepository: Repository<Client>,
   ) {}
 
-  findAll(): Promise<IClient[]> {
+  findAll(): Promise<Client[]> {
     return this.clientsRepository.find();
   }
 
-  findOne(id: number): Promise<IClient> {
-    return this.clientsRepository.findOneBy({ id });
+  create(client: Client): Promise<Client> {
+    return this.clientsRepository.save(client);
   }
 
-  create(client: Omit<IClient, 'id'>): Promise<IClient> {
-    const data = this.clientsRepository.create(client);
-    return this.clientsRepository.save(data);
+  async update(id: number, Client: Partial<Client>): Promise<Client[]> {
+    await this.clientsRepository.update(id, Client);
+    return this.clientsRepository.find();
   }
 
-  async delete(id: number) {
+  async remove(id: number): Promise<void> {
     await this.clientsRepository.delete(id);
-    return this.clientsRepository.find();
   }
 
-  async update(id: number, client: Partial<IClient>): Promise<IClient> {
-    await this.clientsRepository.update(id, client);
-    const updatedClient = this.clientsRepository.findOneBy({ id });
-    if (!updatedClient) {
-      throw new Error(`Client with id ${id} not found`);
-    }
-    return updatedClient;
+  async findOne(id: number): Promise<Client> {
+    const client = await this.clientsRepository.findOneBy({ id });
+    return client;
   }
 }
