@@ -2,32 +2,81 @@ import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 import CustomerFormEdit from "./CustomerFormEdit";
 import CustomerFormAdd from "./CustomerFormAdd";
-import { Product } from "../../types/Product";
 import { Customer } from "../../types/Customer";
-import { Sales } from "../../types/Sales";
+import { useDispatch, useSelector } from "react-redux";
+import { addCustomer, updateCustomer } from "../../redux/customerSlice";
+import { addSales } from "../../redux/saleSlice";
+import { RootState } from "../../redux/store";
+import { format } from "date-fns";
 
 interface CustomerDialogProps {
   customer: Customer;
   mode: "add" | "edit" | "view";
-  onSave: (updatedCustomer: Customer) => void;
   onClose: () => void;
-  availableProduct: Product[];
-  sales: Sales[];
+  infoSale: InfoSale;
+  onChangeInfoSale: (newInfoSale: InfoSale) => void;
+}
+
+export interface InfoSale {
+  nomProduit: string;
+  nombre: number;
 }
 
 const CustomerDialog: React.FC<CustomerDialogProps> = ({
   customer,
   mode,
-  onSave,
   onClose,
-  availableProduct,
-  sales,
+  infoSale,
+  onChangeInfoSale,
 }) => {
+  const products = useSelector((state: RootState) => state.products);
+
   const [updatedCustomer, setUpdatedCustomer] = useState<Customer>(customer);
 
-  const handleSave = () => {
-    onSave(updatedCustomer); // Passe le client mis à jour au parent
-    onClose(); // Ferme la boîte de dialogue
+  const [curInfoSale, setCurInfoSale] = useState<InfoSale>(infoSale);
+
+  const dispatch = useDispatch();
+
+  const handleChangeAdd = (
+    updatedCustomer: Customer,
+    updatedInfoSale: InfoSale
+  ) => {
+    setUpdatedCustomer(updatedCustomer);
+    setCurInfoSale(updatedInfoSale);
+  };
+
+  console.log("curInfoSale : ", curInfoSale);
+
+  // Fonction pour convetir un nomProduit en idProduit
+  const getProductIdByName = (productName: string) => {
+    const product = products.find(
+      (p) => p.nom.toLocaleLowerCase() === productName.toLocaleLowerCase()
+    );
+    return product ? product.id : 1010;
+  };
+
+  // Fonction pour convertir un curInfoSale en un Sale
+  const convertInfoSaleToSale = (curInfoSale: InfoSale) => {
+    const now = new Date();
+    const dateAchat = format(now, "dd/MM/yyyy HH:mm:ss");
+    return {
+      id: Date.now(),
+      idClient: customer.id,
+      idProduit: getProductIdByName(curInfoSale.nomProduit),
+      nombre: curInfoSale.nombre,
+      dateAchat: dateAchat,
+    };
+  };
+
+  const handleAdd = () => {
+    dispatch(addCustomer(updatedCustomer));
+    dispatch(addSales(convertInfoSaleToSale(curInfoSale)));
+    onClose();
+  };
+
+  const handleEdit = () => {
+    dispatch(updateCustomer(updatedCustomer));
+    onClose();
   };
 
   return (
@@ -35,17 +84,12 @@ const CustomerDialog: React.FC<CustomerDialogProps> = ({
       <div className="bg-white rounded-lg shadow-xl p-6">
         <div className="space-y-4">
           {mode === "view" && (
-            <CustomerInfo
-              customer={customer}
-              onClose={onClose}
-              products={availableProduct}
-              sales={sales}
-            />
+            <CustomerInfo customer={customer} onClose={onClose} />
           )}
           {mode === "edit" && (
             <CustomerFormEdit
               customer={customer}
-              handleSave={handleSave}
+              handleSave={handleEdit}
               onChange={setUpdatedCustomer}
               onClose={onClose}
             />
@@ -53,9 +97,11 @@ const CustomerDialog: React.FC<CustomerDialogProps> = ({
           {mode === "add" && (
             <CustomerFormAdd
               customer={customer}
-              availableProduct={availableProduct}
-              handleSave={handleSave}
-              onChange={setUpdatedCustomer}
+              handleSave={handleAdd}
+              onChange={(updateCustomer, updatedInfoSale) => {
+                handleChangeAdd(updateCustomer, updatedInfoSale);
+                onChangeInfoSale(updatedInfoSale);
+              }}
               onClose={onClose}
             />
           )}

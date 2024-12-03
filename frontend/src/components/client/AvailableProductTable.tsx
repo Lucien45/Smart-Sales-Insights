@@ -1,13 +1,11 @@
 import React from "react";
-import { Product } from "../../types/Product";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
-interface AvailableProductTableProps {
-  availableProductList: Product[];
-}
-
-const AvailableProductTable: React.FC<AvailableProductTableProps> = ({
-  availableProductList,
-}) => {
+const AvailableProductTable: React.FC = () => {
+  const availableProductList = useSelector(
+    (state: RootState) => state.products
+  );
   return (
     <div>
       <h3>Produits disponibles</h3>
@@ -15,7 +13,7 @@ const AvailableProductTable: React.FC<AvailableProductTableProps> = ({
         <thead>
           <tr className="bg-gray-100 border-b">
             <th className="p-2">Produits</th>
-            <th className="p-2">Prix</th>
+            <th className="p-2">Prix unité</th>
             <th className="p-2">Stock</th>
             <th className="p-2">Categorie</th>
           </tr>
@@ -24,9 +22,9 @@ const AvailableProductTable: React.FC<AvailableProductTableProps> = ({
           {availableProductList.map((p) => (
             <tr key={p.id} className="border-b hover:bg-gray-50">
               <td className="p-2">{p.nom}</td>
-              <td className="p-2">{p.prix}</td>
-              <td className="p-2">{p.stock}</td>
-              <td className="p-2">{p.idCategorie}</td>
+              <td className="p-2 text-center">{p.prix} $</td>
+              <td className="p-2 text-center">{p.stock}</td>
+              <td className="p-2 text-center">{p.idCategorie}</td>
             </tr>
           ))}
         </tbody>

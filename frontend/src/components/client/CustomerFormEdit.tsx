@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Customer } from "../../types/Customer";
+import toast from "react-hot-toast";
 
 interface CustomerFormEditProps {
   customer: Customer;
@@ -21,6 +22,15 @@ const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
     setCurCustomer(updatedFormData);
     onChange(updatedFormData);
   };
+
+  const handleSaveWithValidation = () => {
+    if (!curCustomer.lastName || !curCustomer.email) {
+      toast.error("Les champs Nom et Email ne peuvent pas etre vide")
+      return
+    }
+    handleSave()
+    toast.success("Modification effectué avec succès")
+  }
 
   return (
     <div className="space-y-4 w-96">
@@ -59,7 +69,7 @@ const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
       <div className="flex justify-between space-x-4">
         <button
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-          onClick={handleSave}
+          onClick={handleSaveWithValidation}
         >
           Enregistrer
         </button>
