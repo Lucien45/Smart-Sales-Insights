@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Utils } from '../utils/Utils';
 import { AuthState, LoginCredentials, RegisterData } from '../types/Utilisateur';
+import toast from 'react-hot-toast';
 
 const API_URL = 'http://localhost:3000/users';
 
@@ -76,7 +77,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Utils.success('Vous êtes connecté avec succès.', 'Welcome back!');
+        toast.success('Vous êtes connecté avec succès.');
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -99,7 +100,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
-        Utils.success('Vous avez été déconnecté avec succès.','Logged Out')
+        toast.success('Vous avez été déconnecté avec succès.')
       })
       .addCase(getProfileUser.pending, (state) => {
         state.isLoading = true;
