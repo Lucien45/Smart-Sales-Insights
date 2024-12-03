@@ -159,7 +159,7 @@ const Dashboard = () => {
       </div>
       
       <div className="w-full flex gap-4">      
-        <Card className="p-4 w-[40vw]">
+        <Card className="p-4 w-[40vw] h-32">
           {userInfo.role === 'superuser' && (
             <UserSelector
               value={selectedIds.sales}
@@ -171,7 +171,7 @@ const Dashboard = () => {
           <SalesChart userId={selectedIds.sales} />
         </Card>
 
-        <Card className="p-4 w-[40vw]">
+        <Card className="p-4 w-[40vw] h-32">
           {userInfo.role === 'superuser' && (
             <div className="flex flex-col gap-4">
               <UserSelector

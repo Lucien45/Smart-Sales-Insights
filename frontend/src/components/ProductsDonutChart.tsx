@@ -71,7 +71,7 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="flex flex-col justify-center items-center rounded-lg p-4">
+    <Card className="flex flex-col justify-center items-center rounded-lg h-32 p-4">
       <h2 className="text-xl font-bold mb-4 text-center">
         Distribution des Produits par Catégorie
       </h2>

@@ -52,7 +52,7 @@ const AchatsParClientChart = () => {
         display: true,
         text: "Nombre d'achats par client",
         font: {
-          size: 16,
+          size: 24,
         },
       },
     },
