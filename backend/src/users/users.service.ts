@@ -8,6 +8,7 @@ import { Utilisateur } from './entities/utilisateur.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { FormDataUser } from 'src/types/Utilisateur';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +25,7 @@ export class UsersService {
     type: 'user' | 'superuser';
   }) {
     const { username, mail, password, type } = data;
+
     const existingUser = await this.utilisateurRepository.findOne({
       where: { mail },
     });
@@ -49,14 +51,18 @@ export class UsersService {
     const user = await this.utilisateurRepository.findOne({
       where: [{ mail: identifier }, { username: identifier }],
     });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new UnauthorizedException('Invalid credentials.');
+
+    if (!user) {
+      throw new UnauthorizedException(
+        'Aucun utilisateur trouvé avec cet identifiant.',
+      );
     }
 
-    const payload = { sub: user.id, username: user.username, type: user.type };
-    const token = this.jwtService.sign(payload);
-
-    return { token };
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Mot de passe incorrect.');
+    }
+    return user;
   }
 
   async getProfileUser(userId: number) {
@@ -69,13 +75,29 @@ export class UsersService {
     return user;
   }
 
-  async logout() {
-    return { message: 'logout succes' };
+  async getAllUser() {
+    const user = await this.utilisateurRepository.find();
+    return user;
   }
 
-  async findAll() {
-    return this.utilisateurRepository.find({
-      select: ['id', 'username'], // Récupérer seulement les champs nécessaires
-    });
+  async updateUser(id: number, data: Partial<FormDataUser>) {
+    const user = await this.utilisateurRepository.findOneBy({ id });
+    if (!user) {
+      throw new Error('Utilisateur introuvable');
+    }
+
+    const updatedUser = Object.assign(user, data);
+    await this.utilisateurRepository.save(updatedUser);
+
+    return this.utilisateurRepository.findOneBy({ id });
+  }
+
+  async deleteUser(id: number) {
+    await this.utilisateurRepository.delete(id);
+    return this.utilisateurRepository.find();
+  }
+
+  async logout() {
+    return { message: 'logout succes' };
   }
 }

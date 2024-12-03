@@ -8,19 +8,39 @@ export interface User {
 
 export interface AuthState {
   user: User | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  users: any[],
   token: string | null;
   isLoading: boolean;
   error: string | null;
 }
 
 export interface LoginCredentials {
-  identifier: string;
+  identification: string;
   password: string;
 }
 
 export interface RegisterData {
   username: string;
-  email: string;
+  mail: string;
   password: string;
-  confirmPassword: string;
+  role: string;
+}
+
+export interface UpdateDataUser  {
+  username: string;
+  mail: string;
+  password: string;
+  type: string;
+}
+
+export interface UpdateUserProps {
+  id: string;
+  showModal: boolean;
+  onHide: () => void;
+  currentData: {
+      username: string;
+      mail: string;
+      role: string;
+  };
 }
