@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { Utilisateur } from 'src/users/entities/utilisateur.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
@@ -7,6 +8,7 @@ export class Client {
   id: number;
 
   @Column()
+  @IsNotEmpty()
   nom: string;
 
   @Column()
@@ -15,12 +17,12 @@ export class Client {
   @Column()
   numeroPhone: string;
 
-  @Column()
+  @Column({ unique: true })
+  @IsNotEmpty()
   email: string;
 
   @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, {
     nullable: false,
   })
   idUtilisateur: Utilisateur;
-
 }
