@@ -1,13 +1,7 @@
-import React, { useState } from 'react'
 import { Input } from '../ui/input';
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select';
-
-
 
 const MainProduct = () => {
-  const [productName, setProductName] = useState<string>('');
-  const [productPrice, setProductPrice] = useState<number>(0);
-  
+
   return (
     <div className='p-4 m-4 rounded-md border border-slate-900 w-[60vw]'>
       <h1 className='text-center text-blue-500'>Ajouter un nouveau produit</h1>
