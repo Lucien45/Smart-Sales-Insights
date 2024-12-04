@@ -57,11 +57,12 @@ const ProductsDonutChart = () => {
       },
       title: {
         display: true,
-        text: "Distribution des ventes par catégories",
+        text: "Vente par catégories",
         font : {
           size: 20
         },
       },
+      
       tooltip: {
         callbacks: {
           label: function(context: any) {
@@ -74,10 +75,11 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="flex flex-col justify-center items-center rounded-lg min-h-48 p-4 w-fit">
+    <Card className="flex flex-col items-center rounded-lg min-h-48 p-4 w-[92vw] md:w-[40vw]">
       <div className="flex justify-center items-center">
         <Doughnut data={chartData} options={options} />
       </div>
+      
     </Card>
   );
 };

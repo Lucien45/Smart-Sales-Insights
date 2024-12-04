@@ -149,7 +149,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-4 ">      
       <div className="flex flex-col md:flex-row gap-4 ">
-        <div className="rounded-lg w-[40vw]">
+        <div className="rounded-lg w-[40vw] ">
           <AchatsParClientChart />
         </div>
         <div className="rounded-lg w-[40vw]">

@@ -109,7 +109,7 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
       },
       title: {
         display: true,
-        text: 'Évolution des ventes par catégorie',
+        text: 'Ventes par utilisateur',
         font : {
           size: 20
         },

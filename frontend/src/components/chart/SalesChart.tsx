@@ -51,7 +51,7 @@ const SalesChart = ({ userId }: { userId: number }) => {
       },
       title: {
         display: true,
-        text: 'Évolution des ventes par clients',
+        text: 'Ventes par clients',
         font : {
           size: 20
         },
