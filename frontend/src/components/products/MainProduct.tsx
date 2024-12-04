@@ -27,11 +27,11 @@ const MainProduct = () => {
         </div>
         <div className='flex justify-between'>
           <div>
-            <label htmlFor="">Prix d'un produit</label>
+            <label htmlFor="">Prix d'un produit  en Ariary</label>
             <Input type='number' min={0}/>
           </div>
           <div>
-            <label htmlFor="">Nombre produit en Ariary</label>
+            <label htmlFor="">Nombre produit</label>
             <Input type='number' min={0}/>
           </div>
         </div>
