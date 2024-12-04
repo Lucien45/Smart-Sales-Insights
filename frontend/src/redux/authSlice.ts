@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
       localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
+      return rejectWithValue(error.response?.data?.message || 'La connexion a échoué');
     }
   }
 );
@@ -27,7 +27,7 @@ export const register = createAsyncThunk(
       const response = await axios.post(`${API_URL}/register`, data);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Registration failed');
+      return rejectWithValue(error.response?.data?.message || 'L\'inscription a échoué');
     }
   }
 );
@@ -64,7 +64,7 @@ export const getProfileUser = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
-      console.log(error.response?.data?.message || 'Failed to fetch profile');
+      console.log(error.response?.data?.message || 'Échec de la récupération du profil');
       
     }
   }
@@ -101,7 +101,7 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-        Utils.errorPage(state.error || 'An error occurred during login.', 'Login Failed');
+        Utils.errorPage(state.error || 'Une erreur s\'est produite lors de la connexion.', 'La connexion a échoué');
       })
       .addCase(register.pending, (state) => {
         state.isLoading = true;
@@ -114,7 +114,7 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-        Utils.errorPage(state.error || 'An error occurred during registration.', 'Registration Failed');
+        Utils.errorPage(state.error || 'Une erreur s\'est produite lors de l\'inscription.', 'Registration Failed');
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
