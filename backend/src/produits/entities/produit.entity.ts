@@ -24,6 +24,6 @@ export class Produit {
   @ManyToOne(() => Categorie, (categorie) => categorie.produits, {
     eager: true,
   })
-  @JoinColumn({ name: 'idCategorie' }) // Assurez-vous que le nom de la colonne est correct
+  @JoinColumn({ name: 'idCategorie' })
   idCategorie: Categorie;
 }

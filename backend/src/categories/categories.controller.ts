@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
+import { Categorie } from './entities/categorie.entity';
 
 @Controller('categories')
 export class CategoriesController {
@@ -11,4 +12,11 @@ export class CategoriesController {
       relations: ['produits'],
     });
   }
+
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<Categorie> {
+    return this.categoriesService.findOne(id);
+  }
+
+  
 }

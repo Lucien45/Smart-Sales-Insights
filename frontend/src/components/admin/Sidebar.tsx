@@ -10,7 +10,7 @@ const Sidebar = () => {
             <LayoutDashboard size={18} className="me-2" />
             Dashboard
         </Nav.Link>
-        <Nav.Link as={Link} to="#" className="sidebar-link">
+        <Nav.Link as={Link} to="/admin/analyse" className="sidebar-link">
             <BarChart2 size={18} className="me-2" />
             Analyses
         </Nav.Link>
@@ -18,7 +18,7 @@ const Sidebar = () => {
             <Users size={18} className="me-2" />
             Gestion des Clients
         </Nav.Link>
-        <Nav.Link as={Link} to="/admin/previsions" className="sidebar-link">
+        <Nav.Link as={Link} to="#" className="sidebar-link">
             <TrendingUp size={18} className="me-2" />
             Prévisions
         </Nav.Link>

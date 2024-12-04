@@ -5,6 +5,7 @@ import { Layout } from '../components/admin/Layout';
 import Dashboard from '../views/admin/Dashboard';
 import {Parametres} from '../views/admin/Parametres';
 import Clients from '../views/admin/Clients';
+import SalesAnalysis from '../components/SalesAnalysis';
 
 interface AdminRouteProps {
     setLoading: (value: boolean) => void;
@@ -30,7 +31,7 @@ const AppRoute = ({ setLoading }: AdminRouteProps) => {
                 <Route index element={<Dashboard />} />
                 <Route path='/parametre' element={<Parametres/>}/>
                 <Route path='/clients' element={<Clients />} />
-                <Route path='/previsions' element=''/>
+                <Route path='/analyse' element={<SalesAnalysis/>}/>
             </Route>
             
             {/* ERREUR */}
