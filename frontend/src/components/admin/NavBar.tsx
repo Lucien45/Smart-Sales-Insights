@@ -29,7 +29,8 @@ const NavBar = () => {
         if (token) {
             dispatch(getProfileUser());
         } else {
-        console.log('Utilisateur non connecté ou token absent.');
+            // navigate('/');
+            console.log('Utilisateur non connecté ou token absent.');
         
         }
   }, [dispatch, token, navigate]);

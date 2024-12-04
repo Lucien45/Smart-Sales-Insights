@@ -9,6 +9,7 @@ import AppRoute from "./routes/AppRoute";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,7 +20,11 @@ function App() {
         <ToastContainer position='top-center'/>
         <Routes>
           <Route path='/*' element={<AuthRoute setLoading={setLoading}/>}/>
-          <Route path='/admin/*' element={<AppRoute setLoading={setLoading}/>}/>
+          <Route path='/admin/*' element={
+            <ProtectedRoute >
+              <AppRoute setLoading={setLoading}/>
+            </ProtectedRoute>
+          }/>
         </Routes>
       </BrowserRouter>
     </Provider>

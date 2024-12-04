@@ -5,6 +5,8 @@ import { Layout } from '../components/admin/Layout';
 import Dashboard from '../views/admin/Dashboard';
 import {Parametres} from '../views/admin/Parametres';
 import Clients from '../views/admin/Clients';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 interface AdminRouteProps {
     setLoading: (value: boolean) => void;
@@ -12,8 +14,9 @@ interface AdminRouteProps {
 
 
 const AppRoute = ({ setLoading }: AdminRouteProps) => {
-
+    
     const location = useLocation();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         setLoading(true);
@@ -23,6 +26,10 @@ const AppRoute = ({ setLoading }: AdminRouteProps) => {
         return () => clearTimeout(timeout);
     }, [location, setLoading]);
 
+    if (!user) {
+        return <Page404 />;
+    }
+
     return (
         <Routes>
             {/* APP ROUTE */}
@@ -31,6 +38,32 @@ const AppRoute = ({ setLoading }: AdminRouteProps) => {
                 <Route path='/parametre' element={<Parametres/>}/>
                 <Route path='/clients' element={<Clients />} />
             </Route>
+            {/* <Route element={<Layout />}>
+                <Route
+                    index
+                    element={
+                        <ProtectedRoute allowedRoles={['superuser']}>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/parametre"
+                    element={
+                        <ProtectedRoute allowedRoles={['superuser']}>
+                            <Parametres />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/clients"
+                    element={
+                        <ProtectedRoute allowedRoles={['superuser']}>
+                            <Clients />
+                        </ProtectedRoute>
+                    }
+                />
+            </Route> */}
             {/* ERREUR */}
             <Route path='*' element={<Page404/>} />
         </Routes>
