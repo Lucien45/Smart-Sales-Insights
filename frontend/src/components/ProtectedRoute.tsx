@@ -13,9 +13,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
   if (!token || !user) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
-  // if (allowedRoles && !allowedRoles.includes(user.type)) {
-  //   return <Navigate to="/dashboard" replace />;
-  // }
+  else{
+    return <Navigate to="/admin" replace />;
+  }
   return (
     <>{children}</>
   )
