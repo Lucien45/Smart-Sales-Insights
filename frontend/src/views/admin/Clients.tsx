@@ -1,116 +1,130 @@
 import React, { useState } from "react";
-import "../../index.css";
-import CustomerTable from "../../components/client/CustomerTable";
-import CustomerDialog, {
-  InfoSale,
-} from "../../components/client/CustomerDialog";
-import CustomerHeader from "../../components/client/CustomerHeader";
-import { Customer } from "../../types/Customer";
-import AvailableProductTable from "../../components/client/AvailableProductTable";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { deleteCustomer } from "../../redux/customerSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteClient, setSearchQuery } from "../../redux/clientSlice";
+import { AppDispatch, RootState } from "../../redux/store";
+import Dialog from "../../components/client/Dialog";
+import TableClient from "../../components/client/TableClients";
+import Header from "../../components/client/Header";
+import TableProduits from "../../components/client/TableProduit";
+import { InfoVente } from "../../types/InfoVente";
+import { Client } from "../../types/Client";
+import { Utilisateur } from "../../types/UtilisateurK";
+import { User } from "../../types/Utilisateur";
 
-const Clients: React.FC = () => {
-  const dispatch = useDispatch();
-  const customers = useSelector((state: RootState) => state.customers);
+const ClientTable: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
 
-  const auth = useSelector((state: RootState) => state.auth)
-  console.log("auth.user : ", auth.user);
-  
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
+  // Sélection des données depuis le store Redux
+  const { clients, searchQuery } = useSelector(
+    (state: RootState) => state.client
   );
-  const [infoSale, setInfoSale] = useState<InfoSale>({
-    nomProduit: "Produit ZZZ",
-    nombre: 1212,
-  });
+
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
   const [dialogMode, setDialogMode] = useState<"add" | "edit" | "view">("view");
 
-  // Filter customers based on search term
-  const filteredCustomers = customers.filter(
-    (customer) =>
-      customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [infoSale, setInfoSale] = useState<InfoVente>({
+    nombre: -1,
+    nomProduit: "Produit XYZ",
+  });
 
-  const handleAddCustomer = () => {
-    setSelectedCustomer({
-      id: Date.now(),
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      idUser: auth.user?.id || 1 
-    });
-    setInfoSale({
-      nomProduit: "Produit A",
-      nombre: 1,
-    });
-    setDialogMode("add");
-    setIsDialogOpen(true);
+  const auth = useSelector((state: RootState) => state.auth);
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteClient(id));
   };
 
-  const handleInfoSaleChange = (newInfoSale: InfoSale) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
+
+  // Filtrer les clients selon la recherche
+  const filteredClients = clients.filter(
+    (client) =>
+      client.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      client.prenom.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+
+  const handleDetail = (client: Client) => {
+    setSelectedClient({ ...client });
+    setIsDialogOpen(true);
+    setDialogMode("view");
+  };
+
+  const handleModif = (client: Client) => {
+    // setSelectedClientId(-1)
+    // setInfoSale({nombre: -1, nomProduit:"Produit XYZ"})
+    setSelectedClient(client);
+    setIsDialogOpen(true);
+    setDialogMode("edit");
+  };
+
+  const convertUserToUtilisateur = (user: User): Utilisateur => {
+    return {
+      id: user.id,
+      username: user.username,
+      mail: user.mail,
+      password: "", // Générer un mot de passe
+      type: user.type, // Reprise directe
+      date_creation: user.dateCreation, // Copier la date
+    };
+  };
+
+  const handleAjout = () => {
+    setSelectedClient({
+      id: Date.now(),
+      nom: "",
+      prenom: "",
+      email: "",
+      idUtilisateur: convertUserToUtilisateur(auth.user),
+      numeroPhone: "",
+    });
+    setIsDialogOpen(true);
+    setDialogMode("add");
+  };
+
+  const onClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleInfoSaleChange = (newInfoSale: InfoVente) => {
     setInfoSale(newInfoSale); // Synchronise l’état global
   };
 
-  const handleEditCustomer = (customer: Customer) => {
-    setSelectedCustomer({ ...customer });
-    setDialogMode("edit");
-    setIsDialogOpen(true);
-  };
-
-  const handleViewDetails = (customer: Customer) => {
-    setSelectedCustomer({ ...customer });
-    setDialogMode("view");
-    setIsDialogOpen(true);
-  };
-
-  const handleDeleteCustomer = (customerId: number) => {
-    dispatch(deleteCustomer(customerId));
-  };
-
-  console.log("infoSale ato amle fichier Clients.tsx: ",infoSale);
-  
-
-  // Render
   return (
     <div className="bg-gray-100 rounded-lg flex">
       <div className="bg-white rounded-lg w-3/5 p-3 shadow-md m-3 h-fit">
-        <CustomerHeader
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          onAdd={handleAddCustomer}
+        <Header
+          searchTerm={searchQuery}
+          setSearchTerm={handleSearch}
+          onAdd={handleAjout}
         />
 
-        <CustomerTable
-          customers={filteredCustomers}
-          onEdit={handleEditCustomer}
-          onDelete={handleDeleteCustomer}
-          onViewDetails={handleViewDetails}
+        <TableClient
+          clients={filteredClients}
+          onDelete={handleDelete}
+          onEdit={handleModif}
+          onViewDetails={handleDetail}
         />
 
-        {isDialogOpen && selectedCustomer && (
-          <CustomerDialog
-            customer={selectedCustomer}
+        {selectedClient && isDialogOpen && (
+          <Dialog
+            client={selectedClient}
             mode={dialogMode}
-            onClose={() => setIsDialogOpen(false)}
+            onClose={onClose}
             infoSale={infoSale}
             onChangeInfoSale={handleInfoSaleChange}
           />
         )}
       </div>
-
       <div className="bg-white rounded-lg w-2/5 p-3 shadow-md m-3 h-fit">
-        <AvailableProductTable />
+        <TableProduits />
       </div>
     </div>
   );
 };
 
-export default Clients;
+export default ClientTable;

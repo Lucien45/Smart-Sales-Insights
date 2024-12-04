@@ -1,15 +1,15 @@
 import { Edit, Info, Trash2 } from "lucide-react";
-import { Customer } from "../../types/Customer";
+import { Client } from "../../types/Client";
 
 interface CustomerTableProps {
-  customers: Customer[];
-  onEdit: (customer: Customer) => void;
-  onDelete: (customerId: number) => void;
-  onViewDetails: (customer: Customer) => void;
+  clients: Client[];
+  onEdit: (client: Client) => void;
+  onDelete: (clientId: number) => void;
+  onViewDetails: (client: Client) => void;
 }
 
-const CustomerTable: React.FC<CustomerTableProps> = ({
-  customers,
+const TableClient: React.FC<CustomerTableProps> = ({
+  clients,
   onEdit,
   onDelete,
   onViewDetails,
@@ -24,9 +24,9 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {customers.map((customer) => (
+          {clients.map((customer) => (
             <tr key={customer.id} className="border-b hover:bg-gray-50">
-              <td className="p-3">{`${customer.firstName} ${customer.lastName}`}</td>
+              <td className="p-3">{`${customer.prenom} ${customer.nom}`}</td>
               <td className="p-3 text-right">
                 <div className="flex justify-center space-x-2">
                   <button
@@ -57,4 +57,4 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
   );
 };
 
-export default CustomerTable;
+export default TableClient;
