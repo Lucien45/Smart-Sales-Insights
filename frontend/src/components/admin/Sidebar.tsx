@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 const Sidebar = () => {
     const dispatch = useDispatch<AppDispatch>();
     return (
-        <div className="layout-sidebar">
+        <div className="layout-sidebar ">
             <Nav className="flex-column">
                 <Nav.Link as={Link} to="/admin" className="sidebar-link" onClick={() => { dispatch(closeMenu()) }}>
                     <LayoutDashboard size={18} className="me-2" />
@@ -21,6 +21,10 @@ const Sidebar = () => {
                 <Nav.Link as={Link} to="/admin/clients" className="sidebar-link" onClick={() => { dispatch(closeMenu()) }}>
                     <Users size={18} className="me-2" />
                     Gestion des Clients
+                </Nav.Link>
+                <Nav.Link as={Link} to="/admin/products" className="sidebar-link" onClick={() => { dispatch(closeMenu()) }}>
+                    <Settings size={18} className="me-2" />
+                    Gestion des produits
                 </Nav.Link>
                 <Nav.Link as={Link} to="#" className="sidebar-link" onClick={() => { dispatch(closeMenu()) }}>
                     <TrendingUp size={18} className="me-2" />

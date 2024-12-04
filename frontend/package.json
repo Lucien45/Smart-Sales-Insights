@@ -10,13 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.0",
     "@reduxjs/toolkit": "^2.4.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.461.0",
-    "chart.js": "^4.4.6",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.6",
     "react-chartjs-2": "^5.2.0",
@@ -27,11 +32,14 @@
     "react-router-dom": "^7.0.1",
     "react-toastify": "^10.0.6",
     "shadcn-ui": "^0.9.3",
-    "sweetalert2": "^11.14.5"
+    "sweetalert2": "^11.14.5",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@eslint/js": "^9.13.0",
+    "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-chartjs-2": "^2.0.2",
     "@types/react-dom": "^18.3.1",
