@@ -18,7 +18,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: utilisateurs_type_enum; Type: TYPE; Schema: public; Owner: postgres
+-- Name: utilisateurs_type_enum; Type: TYPE; Schema: public; Owner: toavina
 --
 
 CREATE TYPE public.utilisateurs_type_enum AS ENUM (
@@ -27,14 +27,14 @@ CREATE TYPE public.utilisateurs_type_enum AS ENUM (
 );
 
 
-ALTER TYPE public.utilisateurs_type_enum OWNER TO postgres;
+ALTER TYPE public.utilisateurs_type_enum OWNER TO toavina;
 
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: postgres
+-- Name: categories; Type: TABLE; Schema: public; Owner: toavina
 --
 
 CREATE TABLE public.categories (
@@ -43,10 +43,10 @@ CREATE TABLE public.categories (
 );
 
 
-ALTER TABLE public.categories OWNER TO postgres;
+ALTER TABLE public.categories OWNER TO toavina;
 
 --
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: toavina
 --
 
 CREATE SEQUENCE public.categories_id_seq
@@ -58,17 +58,17 @@ CREATE SEQUENCE public.categories_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.categories_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.categories_id_seq OWNER TO toavina;
 
 --
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: toavina
 --
 
 ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
 --
--- Name: clients; Type: TABLE; Schema: public; Owner: postgres
+-- Name: clients; Type: TABLE; Schema: public; Owner: toavina
 --
 
 CREATE TABLE public.clients (
@@ -81,10 +81,10 @@ CREATE TABLE public.clients (
 );
 
 
-ALTER TABLE public.clients OWNER TO postgres;
+ALTER TABLE public.clients OWNER TO toavina;
 
 --
--- Name: clients_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: clients_id_seq; Type: SEQUENCE; Schema: public; Owner: toavina
 --
 
 CREATE SEQUENCE public.clients_id_seq
@@ -96,17 +96,17 @@ CREATE SEQUENCE public.clients_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.clients_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.clients_id_seq OWNER TO toavina;
 
 --
--- Name: clients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: clients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: toavina
 --
 
 ALTER SEQUENCE public.clients_id_seq OWNED BY public.clients.id;
 
 
 --
--- Name: produits; Type: TABLE; Schema: public; Owner: postgres
+-- Name: produits; Type: TABLE; Schema: public; Owner: toavina
 --
 
 CREATE TABLE public.produits (
@@ -118,10 +118,10 @@ CREATE TABLE public.produits (
 );
 
 
-ALTER TABLE public.produits OWNER TO postgres;
+ALTER TABLE public.produits OWNER TO toavina;
 
 --
--- Name: produits_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: produits_id_seq; Type: SEQUENCE; Schema: public; Owner: toavina
 --
 
 CREATE SEQUENCE public.produits_id_seq
@@ -133,17 +133,17 @@ CREATE SEQUENCE public.produits_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.produits_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.produits_id_seq OWNER TO toavina;
 
 --
--- Name: produits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: produits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: toavina
 --
 
 ALTER SEQUENCE public.produits_id_seq OWNED BY public.produits.id;
 
 
 --
--- Name: utilisateurs; Type: TABLE; Schema: public; Owner: postgres
+-- Name: utilisateurs; Type: TABLE; Schema: public; Owner: toavina
 --
 
 CREATE TABLE public.utilisateurs (
@@ -156,10 +156,10 @@ CREATE TABLE public.utilisateurs (
 );
 
 
-ALTER TABLE public.utilisateurs OWNER TO postgres;
+ALTER TABLE public.utilisateurs OWNER TO toavina;
 
 --
--- Name: utilisateurs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: utilisateurs_id_seq; Type: SEQUENCE; Schema: public; Owner: toavina
 --
 
 CREATE SEQUENCE public.utilisateurs_id_seq
@@ -171,17 +171,17 @@ CREATE SEQUENCE public.utilisateurs_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.utilisateurs_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.utilisateurs_id_seq OWNER TO toavina;
 
 --
--- Name: utilisateurs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: utilisateurs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: toavina
 --
 
 ALTER SEQUENCE public.utilisateurs_id_seq OWNED BY public.utilisateurs.id;
 
 
 --
--- Name: ventes; Type: TABLE; Schema: public; Owner: postgres
+-- Name: ventes; Type: TABLE; Schema: public; Owner: toavina
 --
 
 CREATE TABLE public.ventes (
@@ -193,10 +193,10 @@ CREATE TABLE public.ventes (
 );
 
 
-ALTER TABLE public.ventes OWNER TO postgres;
+ALTER TABLE public.ventes OWNER TO toavina;
 
 --
--- Name: ventes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: ventes_id_seq; Type: SEQUENCE; Schema: public; Owner: toavina
 --
 
 CREATE SEQUENCE public.ventes_id_seq
@@ -208,52 +208,52 @@ CREATE SEQUENCE public.ventes_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.ventes_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.ventes_id_seq OWNER TO toavina;
 
 --
--- Name: ventes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: ventes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: toavina
 --
 
 ALTER SEQUENCE public.ventes_id_seq OWNED BY public.ventes.id;
 
 
 --
--- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
 
 
 --
--- Name: clients id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: clients id; Type: DEFAULT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.clients ALTER COLUMN id SET DEFAULT nextval('public.clients_id_seq'::regclass);
 
 
 --
--- Name: produits id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: produits id; Type: DEFAULT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.produits ALTER COLUMN id SET DEFAULT nextval('public.produits_id_seq'::regclass);
 
 
 --
--- Name: utilisateurs id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: utilisateurs id; Type: DEFAULT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.utilisateurs ALTER COLUMN id SET DEFAULT nextval('public.utilisateurs_id_seq'::regclass);
 
 
 --
--- Name: ventes id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: ventes id; Type: DEFAULT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.ventes ALTER COLUMN id SET DEFAULT nextval('public.ventes_id_seq'::regclass);
 
 
 --
--- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: toavina
 --
 
 COPY public.categories (id, nom) FROM stdin;
@@ -266,7 +266,7 @@ COPY public.categories (id, nom) FROM stdin;
 
 
 --
--- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: toavina
 --
 
 COPY public.clients (id, nom, prenom, "numeroPhone", email, "idUtilisateur") FROM stdin;
@@ -279,7 +279,7 @@ COPY public.clients (id, nom, prenom, "numeroPhone", email, "idUtilisateur") FRO
 
 
 --
--- Data for Name: produits; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: produits; Type: TABLE DATA; Schema: public; Owner: toavina
 --
 
 COPY public.produits (id, nom, prix, stock, "idCategorie") FROM stdin;
@@ -292,7 +292,7 @@ COPY public.produits (id, nom, prix, stock, "idCategorie") FROM stdin;
 
 
 --
--- Data for Name: utilisateurs; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: utilisateurs; Type: TABLE DATA; Schema: public; Owner: toavina
 --
 
 COPY public.utilisateurs (id, username, mail, password, type, date_creation) FROM stdin;
@@ -305,7 +305,7 @@ COPY public.utilisateurs (id, username, mail, password, type, date_creation) FRO
 
 
 --
--- Data for Name: ventes; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: ventes; Type: TABLE DATA; Schema: public; Owner: toavina
 --
 
 COPY public.ventes (id, nombre, date_achat, "idClientId", "idProduitId") FROM stdin;
@@ -1313,42 +1313,42 @@ COPY public.ventes (id, nombre, date_achat, "idClientId", "idProduitId") FROM st
 
 
 --
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: toavina
 --
 
 SELECT pg_catalog.setval('public.categories_id_seq', 5, true);
 
 
 --
--- Name: clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: toavina
 --
 
 SELECT pg_catalog.setval('public.clients_id_seq', 5, true);
 
 
 --
--- Name: produits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: produits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: toavina
 --
 
 SELECT pg_catalog.setval('public.produits_id_seq', 5, true);
 
 
 --
--- Name: utilisateurs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: utilisateurs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: toavina
 --
 
 SELECT pg_catalog.setval('public.utilisateurs_id_seq', 5, true);
 
 
 --
--- Name: ventes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: ventes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: toavina
 --
 
 SELECT pg_catalog.setval('public.ventes_id_seq', 1000, true);
 
 
 --
--- Name: categories PK_24dbc6126a28ff948da33e97d3b; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: categories PK_24dbc6126a28ff948da33e97d3b; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.categories
@@ -1356,7 +1356,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- Name: produits PK_738095029a8d184b11939537702; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: produits PK_738095029a8d184b11939537702; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.produits
@@ -1364,7 +1364,7 @@ ALTER TABLE ONLY public.produits
 
 
 --
--- Name: utilisateurs PK_d3c39b551c51a0bdc76e07b9197; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: utilisateurs PK_d3c39b551c51a0bdc76e07b9197; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.utilisateurs
@@ -1372,7 +1372,7 @@ ALTER TABLE ONLY public.utilisateurs
 
 
 --
--- Name: clients PK_f1ab7cf3a5714dbc6bb4e1c28a4; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: clients PK_f1ab7cf3a5714dbc6bb4e1c28a4; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.clients
@@ -1380,7 +1380,7 @@ ALTER TABLE ONLY public.clients
 
 
 --
--- Name: ventes PK_f2ab45fd7d5872486d54499501d; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ventes PK_f2ab45fd7d5872486d54499501d; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.ventes
@@ -1388,7 +1388,7 @@ ALTER TABLE ONLY public.ventes
 
 
 --
--- Name: utilisateurs UQ_202e0806bbcbef48ecb4cb73435; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: utilisateurs UQ_202e0806bbcbef48ecb4cb73435; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.utilisateurs
@@ -1396,7 +1396,7 @@ ALTER TABLE ONLY public.utilisateurs
 
 
 --
--- Name: utilisateurs UQ_69813a01d3f155ad62f3b4a694d; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: utilisateurs UQ_69813a01d3f155ad62f3b4a694d; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.utilisateurs
@@ -1404,7 +1404,7 @@ ALTER TABLE ONLY public.utilisateurs
 
 
 --
--- Name: clients UQ_b48860677afe62cd96e12659482; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: clients UQ_b48860677afe62cd96e12659482; Type: CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.clients
@@ -1412,7 +1412,7 @@ ALTER TABLE ONLY public.clients
 
 
 --
--- Name: ventes FK_2dd15252289dc26320cb0b1244a; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ventes FK_2dd15252289dc26320cb0b1244a; Type: FK CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.ventes
@@ -1420,7 +1420,7 @@ ALTER TABLE ONLY public.ventes
 
 
 --
--- Name: clients FK_5e0148aeb703f0c2df06735305e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: clients FK_5e0148aeb703f0c2df06735305e; Type: FK CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.clients
@@ -1428,7 +1428,7 @@ ALTER TABLE ONLY public.clients
 
 
 --
--- Name: ventes FK_73bf64daf5419d3078669b9d5ec; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ventes FK_73bf64daf5419d3078669b9d5ec; Type: FK CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.ventes
@@ -1436,7 +1436,7 @@ ALTER TABLE ONLY public.ventes
 
 
 --
--- Name: produits FK_d64b42090432efdceb9f9aed44d; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: produits FK_d64b42090432efdceb9f9aed44d; Type: FK CONSTRAINT; Schema: public; Owner: toavina
 --
 
 ALTER TABLE ONLY public.produits
