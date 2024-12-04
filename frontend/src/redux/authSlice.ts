@@ -4,15 +4,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Utils } from '../utils/Utils';
 import { AuthState, LoginCredentials, RegisterData } from '../types/Utilisateur';
+import toast from "react-hot-toast";
 
-const API_URL = 'http://localhost:3000/users';
+const API_URL = "http://localhost:3000/users";
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/login`, credentials);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'La connexion a échoué');
@@ -21,7 +22,7 @@ export const login = createAsyncThunk(
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/register`, data);
@@ -33,39 +34,42 @@ export const register = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { rejectWithValue }) => {
-      try {
-          localStorage.removeItem('token');
-      } catch (error) {
-          return rejectWithValue('Erreur lors de la déconnexion.');
-      }
+    try {
+      localStorage.removeItem("token");
+    } catch (error) {
+      return rejectWithValue("Erreur lors de la déconnexion.");
+    }
   }
 );
 
-export const getAllUser = createAsyncThunk('auth/getAllUser', async(_, { rejectWithValue }) =>{
-  try {
-    const response = await axios.get(`${API_URL}/list-user`);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue('Erreur lors de la déconnexion.');
+export const getAllUser = createAsyncThunk(
+  "auth/getAllUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/list-user`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("Erreur lors de la déconnexion.");
+    }
   }
-})
+);
 
 export const getProfileUser = createAsyncThunk(
   'auth/getProfileUser',
   async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No token found');
-      
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+
       const response = await axios.get(`${API_URL}/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error: any) {
       console.log(error.response?.data?.message || 'Échec de la récupération du profil');
-      
+    
     }
   }
 );
@@ -73,13 +77,13 @@ export const getProfileUser = createAsyncThunk(
 const initialState: AuthState = {
   user: null,
   users: [],
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem("token"),
   isLoading: false,
   error: null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -96,7 +100,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Utils.success('Vous êtes connecté avec succès.', 'Welcome back!');
+        toast.success("Vous êtes connecté avec succès.");
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -109,7 +113,7 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
-        Utils.success('compte cree avec succes.', 'Registration Successful');
+        Utils.success("compte cree avec succes.", "Registration Successful");
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -119,7 +123,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
-        Utils.success('Vous avez été déconnecté avec succès.','Logged Out')
+        toast.success("Vous avez été déconnecté avec succès.");
       })
       .addCase(getProfileUser.pending, (state) => {
         state.isLoading = true;
@@ -131,8 +135,11 @@ const authSlice = createSlice({
       .addCase(getProfileUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-        if (state.error !== 'Aucun token trouvé.') {
-          Utils.errorPage(state.error || 'Impossible de récupérer le profil utilisateur.', 'Erreur');
+        if (state.error !== "Aucun token trouvé.") {
+          Utils.errorPage(
+            state.error || "Impossible de récupérer le profil utilisateur.",
+            "Erreur"
+          );
         }
       })
       .addCase(getAllUser.pending, (state) => {

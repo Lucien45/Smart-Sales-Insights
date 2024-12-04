@@ -261,7 +261,6 @@ export const Parametres: React.FC = () => {
     );
 };
 
-
 export const UpdateUser:React.FC<UpdateUserProps> = ({ id, onClose }) => {
     const [UserData, setUserData] = useState({ 
         username: '', mail: '', role: '',  new_password:'', confirme_mdp: ''

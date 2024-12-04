@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Utilisateur } from 'src/users/entities/utilisateur.entity';
 
 export interface IClient {
