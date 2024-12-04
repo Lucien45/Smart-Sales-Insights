@@ -3,6 +3,7 @@ import authReducer from "./authSlice";
 import clientReducer from "./clientSlice";
 import produitReducer from "./produitSlice";
 import venteReducer from "./venteSlice";
+import toggleMenuReducer from "./toggleMenuSlice"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     client: clientReducer,
     produit: produitReducer,
     vente: venteReducer,
+    toggleMenu: toggleMenuReducer,
   },
 });
 

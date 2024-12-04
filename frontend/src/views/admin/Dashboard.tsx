@@ -4,14 +4,15 @@ import axios from 'axios';
 import { Card } from 'react-bootstrap';
 
 // Components
-import SalesChart from '../../components/SalesChart';
-import AchatsParClientChart from '../../components/AchatsParClientChart';
-import ProductsDonutChart from '../../components/ProductsDonutChart';
-import SalesByCategorie from '../../components/SalesByCategorie';
+import AchatsParClientChart from '../../components/chart/AchatsParClientChart';
+import ProductsDonutChart from '../../components/chart/ProductsDonutChart';
+import SalesByCategorie from '../../components/chart/SalesByCategorie';
+import SalesChart from '../../components/chart/SalesChart';
 
 // Types & Redux
 import { RootState, AppDispatch } from '../../redux/store';
 import { getProfileUser } from '../../redux/authSlice';
+
 
 interface UserInfo {
   userId: number;
@@ -50,7 +51,7 @@ const UserSelector = ({
     >
       {users.map((user) => (
         <option key={user.id} value={user.id}>
-          {user.username} (ID: {user.id})
+          {user.username} ID: {user.id}
         </option>
       ))}
     </select>
@@ -146,11 +147,9 @@ const Dashboard = () => {
   if (!user) return <div>Chargement...</div>;
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold">Tableau de bord</h1>
-      
-      <div className="w-full flex gap-4">
-        <div className="rounded-lg w-[40vw]">
+    <div className="flex flex-col gap-4 ">      
+      <div className="flex flex-col md:flex-row gap-4 ">
+        <div className="rounded-lg w-[40vw] ">
           <AchatsParClientChart />
         </div>
         <div className="rounded-lg w-[40vw]">
@@ -158,22 +157,22 @@ const Dashboard = () => {
         </div>
       </div>
       
-      <div className="w-full flex gap-4">      
-        <Card className="p-4 w-[40vw]">
+      <div className="flex flex-col md:flex-row gap-4">      
+        <Card className="p-4 md:w-[40vw] h-48 bg-green-600 w-fit">
           {userInfo.role === 'superuser' && (
             <UserSelector
               value={selectedIds.sales}
               onChange={handleUserChange('sales')}
               users={allUsers}
-              label="Veuillez choisir l'id de l'utilisateur"
+              label="Utilisateur"
             />
           )}
           <SalesChart userId={selectedIds.sales} />
         </Card>
 
-        <Card className="p-4 w-[40vw]">
+        <Card className="w-fit md:w-[40vw] h-48">
           {userInfo.role === 'superuser' && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-row justify-between gap-4 p-2">
               <UserSelector
                 value={selectedIds.category}
                 onChange={handleUserChange('category')}

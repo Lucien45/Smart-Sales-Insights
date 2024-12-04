@@ -19,7 +19,7 @@ const ProductsDonutChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/produits/stats'); // Ajustez l'URL selon votre API
+        const response = await fetch('http://localhost:3000/produits/stats');
         const categories = await response.json();
         
         const labels = categories.map( cat => cat.categorie);
@@ -53,12 +53,16 @@ const ProductsDonutChart = () => {
     plugins: {
       legend: {
         position: 'right' as const,
-        labels: {
-          font: {
-            size: 12
-          }
-        }
+        display: false
       },
+      title: {
+        display: true,
+        text: "Vente par catégories",
+        font : {
+          size: 20
+        },
+      },
+      
       tooltip: {
         callbacks: {
           label: function(context: any) {
@@ -71,13 +75,11 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="flex flex-col justify-center items-center rounded-lg p-4">
-      <h2 className="text-xl font-bold mb-4 text-center">
-        Distribution des Produits par Catégorie
-      </h2>
+    <Card className="flex flex-col items-center rounded-lg min-h-48 p-4 w-[92vw] md:w-[40vw]">
       <div className="flex justify-center items-center">
         <Doughnut data={chartData} options={options} />
       </div>
+      
     </Card>
   );
 };

@@ -20,7 +20,8 @@ export class Client {
   @Column()
   prenom: string;
 
-  @Column()
+  // Modification à faire pour ne paas alterer ma base de donnée
+  @Column({ nullable: false, default: '12356' })
   numeroPhone: string;
 
   @Column({ unique: true })
