@@ -52,7 +52,7 @@ const AchatsParClientChart = () => {
         display: true,
         text: "Nombre d'achats par client",
         font: {
-          size: 24,
+          size: 20,
         },
       },
     },
@@ -67,6 +67,10 @@ const AchatsParClientChart = () => {
       },
       y: {
         beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Nombre de ventes'
+        }
       },
     },
     layout: {
@@ -111,8 +115,8 @@ const AchatsParClientChart = () => {
   }
 
   return (
-    <Card className="rounded-lg shadow-lg bg-white p-4">
-      <div>
+    <Card className="rounded-lg shadow-lg bg-white p-4 h-48">
+      <div className=''>
         <Bar options={chartOptions} data={chartData} />
       </div>
     </Card>

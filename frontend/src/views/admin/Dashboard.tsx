@@ -50,7 +50,7 @@ const UserSelector = ({
     >
       {users.map((user) => (
         <option key={user.id} value={user.id}>
-          {user.username} (ID: {user.id})
+          {user.username} ID: {user.id}
         </option>
       ))}
     </select>
@@ -146,10 +146,8 @@ const Dashboard = () => {
   if (!user) return <div>Chargement...</div>;
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold">Tableau de bord</h1>
-      
-      <div className="w-full flex gap-4">
+    <div className="flex flex-col gap-2 ">      
+      <div className="w-full flex gap-4 ">
         <div className="rounded-lg w-[40vw]">
           <AchatsParClientChart />
         </div>
@@ -159,21 +157,21 @@ const Dashboard = () => {
       </div>
       
       <div className="w-full flex gap-4">      
-        <Card className="p-4 w-[40vw] h-32">
+        <Card className="p-4 w-[40vw] h-48">
           {userInfo.role === 'superuser' && (
             <UserSelector
               value={selectedIds.sales}
               onChange={handleUserChange('sales')}
               users={allUsers}
-              label="Veuillez choisir l'id de l'utilisateur"
+              label="Utilisateur"
             />
           )}
           <SalesChart userId={selectedIds.sales} />
         </Card>
 
-        <Card className="p-4 w-[40vw] h-32">
+        <Card className="w-[40vw] h-28">
           {userInfo.role === 'superuser' && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-row justify-between gap-4 p-2">
               <UserSelector
                 value={selectedIds.category}
                 onChange={handleUserChange('category')}

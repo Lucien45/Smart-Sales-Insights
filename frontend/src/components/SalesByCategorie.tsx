@@ -110,6 +110,9 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
       title: {
         display: true,
         text: 'Évolution des ventes par catégorie',
+        font : {
+          size: 20
+        },
       },
     },
     scales: {
@@ -120,12 +123,6 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
           text: 'Nombre de ventes'
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: 'Date'
-        }
-      }
     },
   };
 

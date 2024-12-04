@@ -53,11 +53,14 @@ const ProductsDonutChart = () => {
     plugins: {
       legend: {
         position: 'right' as const,
-        labels: {
-          font: {
-            size: 12
-          }
-        }
+        display: false
+      },
+      title: {
+        display: true,
+        text: "Distribution des ventes par catégories",
+        font : {
+          size: 20
+        },
       },
       tooltip: {
         callbacks: {
@@ -71,10 +74,7 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="flex flex-col justify-center items-center rounded-lg h-32 p-4">
-      <h2 className="text-xl font-bold mb-4 text-center">
-        Distribution des Produits par Catégorie
-      </h2>
+    <Card className="flex flex-col justify-center items-center rounded-lg min-h-48 p-4">
       <div className="flex justify-center items-center">
         <Doughnut data={chartData} options={options} />
       </div>

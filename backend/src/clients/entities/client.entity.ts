@@ -12,15 +12,16 @@ export class Client {
   @Column()
   prenom: string;
 
-  @Column()
+  // Modification à faire pour ne paas alterer ma base de donnée
+  @Column({ nullable: false, default: '12356' })
   numeroPhone: string;
 
-  @Column()
+  // Modification à faire pour ne paas alterer ma base de donnée
+  @Column({ nullable: false, default: '12356' })
   email: string;
 
   @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.id, {
     nullable: false,
   })
   idUtilisateur: Utilisateur;
-
 }

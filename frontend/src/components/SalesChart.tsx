@@ -43,6 +43,30 @@ const SalesChart = ({ userId }: { userId: number }) => {
     fetchSalesData();
   }, [userId]); // On écoute la mise à jour de selectedUser
 
+  const optionsChart = {
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Évolution des ventes par clients',
+        font : {
+          size: 20
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Nombre de ventes'
+        }
+      },
+    },
+  };
+
   useEffect(() => {
     if (salesData.length > 0) {
       const dates = salesData.map((sale: any) => sale.date);
@@ -50,6 +74,7 @@ const SalesChart = ({ userId }: { userId: number }) => {
 
       setChartData({
         labels: dates,
+
         datasets: [
           {
             label: 'Ventes',
@@ -64,9 +89,8 @@ const SalesChart = ({ userId }: { userId: number }) => {
   }, [salesData]);
 
   return (
-    <div>
-      <h2>Évolution des ventes</h2>        
-      {chartData ? <Line data={chartData} /> : <div>Veuilez choisir un id utilisateur valide</div>}
+    <div>      
+      {chartData ? <Line data={chartData} options={ optionsChart }/> : <div>Il n'y a pas encore de vente pour cet utilisateur</div>}
     </div>
   );
 };
