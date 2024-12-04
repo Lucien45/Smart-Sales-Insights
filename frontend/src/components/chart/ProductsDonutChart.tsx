@@ -19,7 +19,7 @@ const ProductsDonutChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/produits/stats'); // Ajustez l'URL selon votre API
+        const response = await fetch('http://localhost:3000/produits/stats');
         const categories = await response.json();
         
         const labels = categories.map( cat => cat.categorie);
@@ -74,7 +74,7 @@ const ProductsDonutChart = () => {
   };
 
   return (
-    <Card className="flex flex-col justify-center items-center rounded-lg min-h-48 p-4">
+    <Card className="flex flex-col justify-center items-center rounded-lg min-h-48 p-4 w-fit">
       <div className="flex justify-center items-center">
         <Doughnut data={chartData} options={options} />
       </div>

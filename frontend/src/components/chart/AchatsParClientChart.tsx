@@ -115,8 +115,8 @@ const AchatsParClientChart = () => {
   }
 
   return (
-    <Card className="rounded-lg shadow-lg bg-white p-4 h-48">
-      <div className=''>
+    <Card className="rounded-lg p-4 h-48 w-fit">
+      <div className='overflow-y-auto w-[92vw] md:w-[40vw]'>
         <Bar options={chartOptions} data={chartData} />
       </div>
     </Card>

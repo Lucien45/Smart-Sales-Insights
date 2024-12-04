@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
-import { getProfileUser } from '../redux/authSlice';
+import { getProfileUser } from '../../redux/authSlice';
+
 
 // Enregistrer les éléments nécessaires pour Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -89,7 +90,7 @@ const SalesChart = ({ userId }: { userId: number }) => {
   }, [salesData]);
 
   return (
-    <div>      
+    <div className='w-[92vw] md:w-[40vw]'>      
       {chartData ? <Line data={chartData} options={ optionsChart }/> : <div>Il n'y a pas encore de vente pour cet utilisateur</div>}
     </div>
   );
