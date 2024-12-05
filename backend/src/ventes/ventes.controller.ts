@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { Vente } from './entities/vente.entity';
 import { VentesService } from './ventes.service';
+import { CreateVenteDto, UpdateVenteDto } from './dto/vente.dto';
 
 @Controller('ventes')
 export class VentesController {
@@ -28,30 +30,36 @@ export class VentesController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string): Promise<Vente> {
-    return this.ventesService.findOne(+id);
+  findOneById(@Param('id') id: number){
+    return this.ventesService.findOne(id);
   }
 
   @Get()
-  findAll(): Promise<Vente[]> {
+  findAll(){
     return this.ventesService.findAll();
   }
 
   @Post()
-  create(@Body() vente: Vente): Promise<Vente> {
-    return this.ventesService.create(vente);
+  create(@Body() createVenteDto: CreateVenteDto) {
+    return this.ventesService.create(createVenteDto);
   }
+  // create(@Body() vente: Vente): Promise<Vente> {
+  //   return this.ventesService.create(vente);
+  // }
 
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() vente: Partial<Vente>,
-  ): Promise<Vente[]> {
-    return this.ventesService.update(id, vente);
+  update(@Param('id') id: number, @Body() updateVenteDto: UpdateVenteDto) {
+    return this.ventesService.update(id, updateVenteDto);
   }
+  // update(
+  //   @Param('id') id: number,
+  //   @Body() vente: Partial<Vente>,
+  // ): Promise<Vente[]> {
+  //   return this.ventesService.update(id, vente);
+  // }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
+  remove(@Param('id') id: number){
     return this.ventesService.remove(id);
   }
 

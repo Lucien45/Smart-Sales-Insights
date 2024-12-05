@@ -60,7 +60,7 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
           `http://localhost:3000/ventes/user/${userId}/categorie/${categorieId}`
         );
 
-        console.log('Received data:', response.data);
+        // console.log('Received data:', response.data);
 
         if (response.data.length === 0) {
           setIsLoading(false);
@@ -109,7 +109,10 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
       },
       title: {
         display: true,
-        text: 'Évolution des ventes par catégorie',
+        text: 'Ventes par utilisateur',
+        font : {
+          size: 20
+        },
       },
     },
     scales: {
@@ -120,12 +123,6 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
           text: 'Nombre de ventes'
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: 'Date'
-        }
-      }
     },
   };
 
@@ -142,7 +139,7 @@ const SalesByCategorie = ({ userId, categorieId }: SalesByCategorieProps) => {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-fit md:w-[40vw]">
       <Line data={chartData} options={options} />
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Client } from 'src/clients/entities/client.entity';
 import { Produit } from 'src/produits/entities/produit.entity';
 import {

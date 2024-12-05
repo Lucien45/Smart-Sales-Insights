@@ -6,6 +6,7 @@ import Dashboard from '../views/admin/Dashboard';
 import {Parametres} from '../views/admin/Parametres';
 import Clients from '../views/admin/Clients';
 import SalesAnalysis from '../components/SalesAnalysis';
+import ProductManager from '../views/admin/Products';
 
 interface AdminRouteProps {
     setLoading: (value: boolean) => void;
@@ -32,6 +33,7 @@ const AppRoute = ({ setLoading }: AdminRouteProps) => {
                 <Route path='/parametre' element={<Parametres/>}/>
                 <Route path='/clients' element={<Clients />} />
                 <Route path='/analyse' element={<SalesAnalysis/>}/>
+                <Route path='/products' element={<ProductManager/>}/>
             </Route>
             
             {/* ERREUR */}

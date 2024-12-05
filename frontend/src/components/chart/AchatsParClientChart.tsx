@@ -50,9 +50,9 @@ const AchatsParClientChart = () => {
       },
       title: {
         display: true,
-        text: "Nombre d'achats par client",
+        text: "Achats par client",
         font: {
-          size: 16,
+          size: 20,
         },
       },
     },
@@ -67,6 +67,10 @@ const AchatsParClientChart = () => {
       },
       y: {
         beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Nombre de ventes'
+        }
       },
     },
     layout: {
@@ -102,7 +106,7 @@ const AchatsParClientChart = () => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg shadow-lg bg-white p-4">
+      <div className="rounded-lg shadow-lg  p-4">
         <div className="flex items-center justify-center h-full">
           <p>Chargement des données...</p>
         </div>
@@ -111,8 +115,8 @@ const AchatsParClientChart = () => {
   }
 
   return (
-    <Card className="rounded-lg shadow-lg bg-white p-4">
-      <div>
+    <Card className="rounded-lg p-4 w-[92vw] md:w-[40vw] h-48 ">
+      <div className='overflow-y-auto '>
         <Bar options={chartOptions} data={chartData} />
       </div>
     </Card>

@@ -2,11 +2,11 @@ import { Plus, Search } from "lucide-react";
 
 interface HeaderProps {
   searchTerm: string;
-  setSearchTerm: (term: string) => void;
+  setSearchTerm: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onAdd: () => void;
 }
 
-const CustomerHeader: React.FC<HeaderProps> = ({
+const Header: React.FC<HeaderProps> = ({
   searchTerm,
   setSearchTerm,
   onAdd,
@@ -21,7 +21,7 @@ const CustomerHeader: React.FC<HeaderProps> = ({
             placeholder="Rechercher un client"
             className="pl-8 pr-4 py-2 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={setSearchTerm}
           />
           <Search className="absolute left-2 top-3 text-gray-400" size={20} />
         </div>
@@ -36,4 +36,4 @@ const CustomerHeader: React.FC<HeaderProps> = ({
   );
 };
 
-export default CustomerHeader;
+export default Header;

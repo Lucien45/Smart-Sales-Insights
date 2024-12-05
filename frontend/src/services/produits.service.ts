@@ -8,11 +8,8 @@ export const getProducts = async() : Promise<IProduit[]> => {
     return result.data;
   }
   
-  export const createProduct = async (title: string): Promise<IProduit> => {
-    const result = await axios.post(API_URL, { 
-      title, 
-      completed: false 
-    });
+  export const createProduct = async (produit: IProduit): Promise<IProduit> => {
+    const result = await axios.post(`${API_URL}/create`, produit);
     return result.data;   
   }
   

@@ -1,48 +1,49 @@
 import React, { useState } from "react";
-import { Product } from "../../types/Product";
-import { Customer } from "../../types/Customer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { InfoSale } from "./CustomerDialog";
 import toast from "react-hot-toast";
+import { Client } from "../../types/Client";
+import { InfoVente } from "../../types/InfoVente";
+import { Produit } from "../../types/Produit";
 
 interface CustomerFormAddProps {
-  customer: Customer;
-  onChange: (updatedCustomer: Customer, infoSale: InfoSale) => void;
+  customer: Client;
+  onChange: (updatedCustomer: Client, infoSale: InfoVente) => void;
   handleSave: () => void;
   onClose: () => void;
 }
 
-const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
+const AddForm: React.FC<CustomerFormAddProps> = ({
   customer,
   onChange,
   handleSave,
   onClose,
 }) => {
-  const availableProduct = useSelector((state: RootState) => state.products);
-  const [curCustomer, setCurCustomer] = useState<Customer>({ ...customer });
-  const [curInfoSale, setCurInfoSale] = useState<InfoSale>({
+  const availableProduct = useSelector(
+    (state: RootState) => state.produit.produits
+  );
+  const [curCustomer, setCurCustomer] = useState<Client>({ ...customer });
+  const [curInfoSale, setCurInfoSale] = useState<InfoVente>({
     nomProduit: "Produit B",
     nombre: 4,
   });
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Produit | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
 
-  const handleChange = (field: keyof Customer, value: string | number) => {
+  const handleChange = (field: keyof Client, value: string | number) => {
     const updatedFormData = { ...curCustomer, [field]: value };
     setCurCustomer(updatedFormData);
     onChange(updatedFormData, curInfoSale);
   };
 
-  console.log("curInfoSale aty amle fichier CustomerFormAdd.tsx : ", curInfoSale);
-  
+  console.log("curInfoSale aty amle fichier AddForm.tsx : ", curInfoSale);
 
   const handleProductChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const productName = event.target.value;
 
-    const updatedInfoSale = { ...curInfoSale, nomProduit: productName }
+    const updatedInfoSale = { ...curInfoSale, nomProduit: productName };
     setCurInfoSale(updatedInfoSale);
-    onChange(curCustomer, updatedInfoSale)
+    onChange(curCustomer, updatedInfoSale);
 
     const product = availableProduct.find((p) => p.nom === productName) || null;
     setSelectedProduct(product);
@@ -56,21 +57,29 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
     );
     setQuantity(value);
 
-    const updatedInfoSale = { ...curInfoSale, nombre: value }
+    const updatedInfoSale = { ...curInfoSale, nombre: value };
     setCurInfoSale(updatedInfoSale);
-    onChange(curCustomer, updatedInfoSale)
+    onChange(curCustomer, updatedInfoSale);
   };
 
   const handleSaveWithValidation = () => {
-    if (!curCustomer.lastName || !curCustomer.email) {
-      toast.error('Les champs Nom et Email sont obligatoire')
-      return
+    if (!curCustomer.nom || !curCustomer.email || !selectedProduct) {
+      toast.error(
+        "Les champs Nom, Email et le champ de produit sont obligatoire"
+      );
+      return;
     }
-    
-    handleSave()
-    toast.success("Enregistrement effectué avec succès")
-  }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(curCustomer.email)) {
+      toast.error("L'adresse email est invalide.");
+      return;
+    }
+
+    handleSave();
+    toast.success("Enregistrement effectué avec succès");
+    onClose();
+  };
 
   return (
     <div className="space-y-4 w-[600px]">
@@ -81,15 +90,15 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
           <input
             placeholder="Prénom"
             className="border rounded-md p-2 w-full"
-            value={curCustomer.firstName}
-            onChange={(e) => handleChange("firstName", e.target.value)}
+            value={curCustomer.prenom}
+            onChange={(e) => handleChange("prenom", e.target.value)}
           />
           <label htmlFor="">Nom</label>
           <input
             placeholder="Nom"
             className="border rounded-md p-2 w-full"
-            value={curCustomer.lastName}
-            onChange={(e) => handleChange("lastName", e.target.value)}
+            value={curCustomer.nom}
+            onChange={(e) => handleChange("nom", e.target.value)}
             required
           />
           <label htmlFor="">Email</label>
@@ -105,8 +114,8 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
           <input
             placeholder="Téléphone"
             className="border rounded-md p-2 w-full"
-            value={curCustomer.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
+            value={curCustomer.numeroPhone}
+            onChange={(e) => handleChange("numeroPhone", e.target.value)}
             required
           />
         </div>
@@ -123,7 +132,7 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
               name="produit"
               onChange={handleProductChange}
               required
-              className="border-gray-300 focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md shadow-sm text-gray-700"
+              className="border-gray-300 py-2 px-1 focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md shadow-sm text-gray-700"
             >
               <option value="" disabled selected>
                 Choisir un produit
@@ -152,7 +161,7 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
               onChange={handleQuantityChange}
               placeholder="1"
               disabled={!selectedProduct}
-              className={`border-gray-300 focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md shadow-sm text-gray-700 ${
+              className={`border-gray-300 focus:ring-blue-500 py-2 px-1 focus:border-blue-500 block w-full rounded-md shadow-sm text-gray-700 ${
                 !selectedProduct ? "bg-gray-100 cursor-not-allowed" : ""
               }`}
             />
@@ -177,4 +186,4 @@ const CustomerFormAdd: React.FC<CustomerFormAddProps> = ({
   );
 };
 
-export default CustomerFormAdd;
+export default AddForm;

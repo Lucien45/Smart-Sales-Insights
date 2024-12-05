@@ -1,27 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; 
 import '../assets/css/SalesAnalysis.css';
 
+const API_URL = "http://localhost:3000";
+
 const SalesAnalysis: React.FC = () => {
-  // Données statiques avec client ajouté
-  const staticComparisonData = [
-    { product: "Produit 1", category: "Catégorie A", client: "Client 1", sales: 120 },
-    { product: "Produit 2", category: "Catégorie A", client: "Client 2", sales: 90 },
-    { product: "Produit 1", category: "Catégorie B", client: "Client 3", sales: 80 },
-    { product: "Produit 2", category: "Catégorie B", client: "Client 1", sales: 110 },
-  ];
-
-  const staticSegmentData = [
-    { date: "2023-12-01", sales: 50 },
-    { date: "2023-12-02", sales: 70 },
-    { date: "2023-12-03", sales: 40 },
-    { date: "2023-12-04", sales: 100 },
-  ];
-
-  const staticAnomalies = [
-    { date: "2023-12-02", anomaly: "Baisse inhabituelle des ventes" },
-    { date: "2023-12-04", anomaly: "Pic de ventes anormal" },
-  ];
-
   const [comparisonResults, setComparisonResults] = useState([]);
   const [segmentResults, setSegmentResults] = useState([]);
   const [anomalies, setAnomalies] = useState([]);
@@ -33,37 +16,48 @@ const SalesAnalysis: React.FC = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Extraire les options uniques des produits, catégories et clients
-  const uniqueProducts = [...new Set(staticComparisonData.map((item) => item.product))];
-  const uniqueCategories = [...new Set(staticComparisonData.map((item) => item.category))];
-  const uniqueClients = [...new Set(staticComparisonData.map((item) => item.client))];
+  // Obtenez les catégories et clients au chargement
+  const [categories, setCategories] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  // Filtrage manuel pour la comparaison
-  const handleCompare = () => {
-    const filteredData = staticComparisonData.filter(
-      (item) =>
-        (productFilter === "" || item.product === productFilter) &&
-        (categoryFilter === "" || item.category === categoryFilter) &&
-        (clientFilter === "" || item.client === clientFilter)
-    );
-    setComparisonResults(filteredData);
+  useEffect(() => {
+    const fetchFilters = async () => {
+      const categoriesResponse = await axios.get(`${API_URL}/categories`);
+      setCategories(categoriesResponse.data);
+
+      const clientsResponse = await axios.get(`${API_URL}/clients`);
+      setClients(clientsResponse.data);
+
+      const productsResponse = await axios.get(`${API_URL}/produits`);
+      setProducts(productsResponse.data);
+    };
+
+    fetchFilters();
+  }, []);
+
+  const handleCompare = async () => {
+    const response = await axios.get(`${API_URL}/ventes/user/${clientFilter}/categorie/${categoryFilter}`);
+    setComparisonResults(response.data);
   };
 
-  // Filtrage manuel pour la segmentation
-  const handleSegment = () => {
-    const filteredData = staticSegmentData.filter(
-      (item) =>
-        (startDate === "" || item.date >= startDate) &&
-        (endDate === "" || item.date <= endDate)
-    );
-    setSegmentResults(filteredData);
+  const handleSegment = async () => {
+    const response = await axios.get(`${API_URL}/ventes`, {
+      params: { startDate, endDate },
+    });
+    setSegmentResults(response.data);
   };
 
-  // Activer/Désactiver les alertes
-  const handleAlertsToggle = () => {
+  const handleAlertsToggle = async () => {
     const newState = !alertsEnabled;
     setAlertsEnabled(newState);
-    setAnomalies(newState ? staticAnomalies : []);
+
+    if (newState) {
+      const anomaliesResponse = await axios.get(`${API_URL}/ventes/stats`);
+      setAnomalies(anomaliesResponse.data);
+    } else {
+      setAnomalies([]);
+    }
   };
 
   return (
@@ -80,9 +74,9 @@ const SalesAnalysis: React.FC = () => {
             onChange={(e) => setProductFilter(e.target.value)}
           >
             <option value="">Sélectionner un produit</option>
-            {uniqueProducts.map((product, index) => (
-              <option key={index} value={product}>
-                {product}
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.nom}
               </option>
             ))}
           </select>
@@ -92,9 +86,9 @@ const SalesAnalysis: React.FC = () => {
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="">Sélectionner une catégorie</option>
-            {uniqueCategories.map((category, index) => (
-              <option key={index} value={category}>
-                {category}
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.nom}
               </option>
             ))}
           </select>
@@ -104,9 +98,9 @@ const SalesAnalysis: React.FC = () => {
             onChange={(e) => setClientFilter(e.target.value)}
           >
             <option value="">Sélectionner un client</option>
-            {uniqueClients.map((client, index) => (
-              <option key={index} value={client}>
-                {client}
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.nom}
               </option>
             ))}
           </select>
@@ -124,11 +118,11 @@ const SalesAnalysis: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {comparisonResults.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.product}</td>
-                  <td>{item.category}</td>
-                  <td>{item.client}</td>
+              {comparisonResults.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.product.nom}</td>
+                  <td>{item.category.nom}</td>
+                  <td>{item.client.nom}</td>
                   <td>{item.sales}</td>
                 </tr>
               ))}
@@ -157,8 +151,8 @@ const SalesAnalysis: React.FC = () => {
         </div>
         {segmentResults.length > 0 && (
           <ul>
-            {segmentResults.map((item, index) => (
-              <li key={index}>
+            {segmentResults.map((item) => (
+              <li key={item.id}>
                 Date: {item.date}, Ventes: {item.sales}
               </li>
             ))}
@@ -174,8 +168,8 @@ const SalesAnalysis: React.FC = () => {
         </button>
         {anomalies.length > 0 && (
           <ul>
-            {anomalies.map((item, index) => (
-              <li key={index}>
+            {anomalies.map((item) => (
+              <li key={item.id}>
                 Date: {item.date}, Anomalie: {item.anomaly}
               </li>
             ))}

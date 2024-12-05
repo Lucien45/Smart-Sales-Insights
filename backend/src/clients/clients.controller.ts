@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Client } from './entities/client.entity';
 import {
   Controller,
@@ -9,6 +10,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
+import { CreateClientDto, UpdateClientDto } from './dto/client.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -20,25 +22,22 @@ export class ClientsController {
   }
 
   @Get()
-  findAll(): Promise<Client[]> {
+  findAll() {
     return this.ClientService.findAll();
   }
 
   @Post()
-  create(@Body() client: Client): Promise<Client> {
-    return this.ClientService.create(client);
+  create(@Body() createClientDto: CreateClientDto) {
+    return this.ClientService.create(createClientDto);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() client: Partial<Client>,
-  ): Promise<Client[]> {
-    return this.ClientService.update(id, client);
+  update(@Param('id') id: number, @Body() updateClientDto: UpdateClientDto) {
+    return this.ClientService.update(id, updateClientDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
+  remove(@Param('id') id: number){
     return this.ClientService.remove(id);
   }
 }

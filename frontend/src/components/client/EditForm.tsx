@@ -1,30 +1,30 @@
 import React, { useState } from "react";
-import { Customer } from "../../types/Customer";
 import toast from "react-hot-toast";
+import { Client } from "../../types/Client";
 
 interface CustomerFormEditProps {
-  customer: Customer;
-  onChange: (updatedCustomer: Customer) => void;
+  customer: Client;
+  onChange: (updatedCustomer: Client) => void;
   handleSave: () => void;
   onClose: () => void;
 }
 
-const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
+const EditForm: React.FC<CustomerFormEditProps> = ({
   customer,
   onChange,
   handleSave,
   onClose,
 }) => {
-  const [curCustomer, setCurCustomer] = useState<Customer>({ ...customer });
+  const [curCustomer, setCurCustomer] = useState<Client>({ ...customer });
 
-  const handleChange = (field: keyof Customer, value: string | number) => {
+  const handleChange = (field: keyof Client, value: string | number) => {
     const updatedFormData = { ...curCustomer, [field]: value };
     setCurCustomer(updatedFormData);
     onChange(updatedFormData);
   };
 
   const handleSaveWithValidation = () => {
-    if (!curCustomer.lastName || !curCustomer.email) {
+    if (!curCustomer.nom || !curCustomer.email) {
       toast.error("Les champs Nom et Email ne peuvent pas etre vide")
       return
     }
@@ -40,15 +40,15 @@ const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
         <input
           placeholder="Prénom"
           className="border rounded-md p-2 w-full"
-          value={curCustomer.firstName}
-          onChange={(e) => handleChange("firstName", e.target.value)}
+          value={curCustomer.prenom}
+          onChange={(e) => handleChange("prenom", e.target.value)}
         />
         <label htmlFor="">Nom</label>
         <input
           placeholder="Nom"
           className="border rounded-md p-2 w-full"
-          value={curCustomer.lastName}
-          onChange={(e) => handleChange("lastName", e.target.value)}
+          value={curCustomer.nom}
+          onChange={(e) => handleChange("nom", e.target.value)}
         />
         <label htmlFor="">Email</label>
         <input
@@ -62,8 +62,8 @@ const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
         <input
           placeholder="Téléphone"
           className="border rounded-md p-2 w-full"
-          value={curCustomer.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
+          value={curCustomer.numeroPhone}
+          onChange={(e) => handleChange("numeroPhone", e.target.value)}
         />
       </div>
       <div className="flex justify-between space-x-4">
@@ -84,4 +84,4 @@ const CustomerFormEdit: React.FC<CustomerFormEditProps> = ({
   );
 };
 
-export default CustomerFormEdit;
+export default EditForm;
