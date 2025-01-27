@@ -27,9 +27,10 @@ const NavBar = () => {
 
     useEffect(() => {
         if (token) {
-        dispatch(getProfileUser());
+            dispatch(getProfileUser());
         } else {
-        console.log('erreur de recueration user');
+            navigate('/');
+            console.log('Utilisateur non connecté ou token absent.');
         
         }
   }, [dispatch, token, navigate]);
@@ -40,7 +41,7 @@ const NavBar = () => {
                 SMART SALES
                 </Navbar.Brand>
                 <Nav className="ms-auto d-flex align-items-center">
-                <span className="me-3">{user?.username || 'Guest'}</span>
+                <span className="me-3">{user?.username}</span>
                 <Button
                     variant="outline-danger"
                     size="sm"

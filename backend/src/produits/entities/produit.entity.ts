@@ -1,5 +1,12 @@
+/* eslint-disable prettier/prettier */
 import { Categorie } from 'src/categories/entities/categorie.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity('produits')
 export class Produit {
@@ -15,6 +22,9 @@ export class Produit {
   @Column()
   stock: number;
 
-  @ManyToOne(() => Categorie, (categorie) => categorie.produits)
+  @ManyToOne(() => Categorie, (categorie) => categorie.produits, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'idCategorie' })
   idCategorie: Categorie;
 }

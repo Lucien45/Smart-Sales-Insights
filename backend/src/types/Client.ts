@@ -1,4 +1,4 @@
-import { Utilisateur } from "src/users/entities/utilisateur.entity";
+import { Utilisateur } from 'src/users/entities/utilisateur.entity';
 
 export interface IClient {
   id: number;

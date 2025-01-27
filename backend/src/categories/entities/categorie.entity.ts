@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Produit } from 'src/produits/entities/produit.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -8,7 +9,7 @@ export class Categorie {
 
   @Column()
   nom: string;
-  
+
   @OneToMany(() => Produit, (produit) => produit.idCategorie)
   produits: Produit[];
 }

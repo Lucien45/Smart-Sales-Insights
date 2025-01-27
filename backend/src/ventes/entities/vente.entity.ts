@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Client } from 'src/clients/entities/client.entity';
 import { Produit } from 'src/produits/entities/produit.entity';
 import {
@@ -5,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  CreateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity('ventes')
@@ -13,15 +14,17 @@ export class Vente {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client, (client) => client.id, { nullable: false })
-  idClient: Client;
-
-  @ManyToOne(() => Produit, (produit) => produit.id, { nullable: false })
-  idProduit: Produit;
-
   @Column()
   nombre: number;
 
-  @CreateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date_achat: Date;
+
+  @ManyToOne(() => Client, { eager: true })
+  @JoinColumn({ name: 'idClientId' })
+  idClient: Client;
+
+  @ManyToOne(() => Produit, { eager: true })
+  @JoinColumn({ name: 'idProduitId' })
+  idProduit: Produit;
 }
