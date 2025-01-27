@@ -4,14 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "npm install && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
-<<<<<<< HEAD
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
@@ -23,11 +22,6 @@
     "react-router-dom": "^7.0.1",
     "react-toastify": "^10.0.6",
     "sweetalert2": "^11.14.5"
-=======
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-redux": "^9.1.2"
->>>>>>> b524c8bf9b59d73a934590e3c838332ad198bac6
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
