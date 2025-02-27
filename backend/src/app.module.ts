@@ -19,13 +19,14 @@ import { StatsModule } from './stats/stats.module';
     CategoriesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres', //username de votre postgres
-      password: 'root', //password de votre postgres
-      database: 'smart_sales',
+      host: process.env.POSTGRES_HOST,
+      port: parseInt(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DATABASE,
       entities: ['dist/**/*.entity{.js,.ts}'],
-      synchronize: true,
+      autoLoadEntities: true,
+      synchronize: process.env.TYPEORM_SYNC === 'true',
     }),
     StatsModule,
   ],
